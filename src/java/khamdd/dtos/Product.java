@@ -5,6 +5,7 @@
  */
 package khamdd.dtos;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -12,7 +13,7 @@ import java.util.Date;
  *
  * @author KHAM
  */
-public class Product {
+public class Product implements Serializable{
     private String productName, image, description, category;
     Date createDate;
     float price;

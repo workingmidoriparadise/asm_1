@@ -16,11 +16,11 @@
         <form action="MainController" method="POST">
             UserID: <input type="text" name="txtUserID" />
             <font color="red">
-                ${INVALID.userIDError}
+            ${requestScope.INVALID.userIDError}
             </font><br/>
             Password: <input type="text" name="txtPassword" />
             <font color="red">
-                ${INVALID.passwordError}
+            ${requestScope.INVALID.passwordError}
             </font>
             <br/>
             <input type="submit" name="action" value="Login" /><br/>

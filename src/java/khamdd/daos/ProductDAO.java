@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import khamdd.dtos.Product;
+import khamdd.connections.Connections;
 
 /**
  *
@@ -32,7 +34,28 @@ public class ProductDAO {
         }
     }
     
-//    public ArrayList search(String id){
-//        ArrayList<> listSearch = null;
-//    }
+    public ArrayList searchByName(String nameSearched) throws Exception{
+        ArrayList<Product> listSearch = null;
+        try {
+            String sql = "Select productID, productName, price, image, description, productCategory"
+                    + " From tbl_product "
+                    + "Where status = 1 and quantity > 0 and productName like ?";
+            conn = Connections.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, "%" + nameSearched + "%");
+            rs = ps.executeQuery();
+            listSearch = new ArrayList<>();
+            while(rs.next()){
+                Product pro = new Product(
+                rs.getString("productID"),rs.getString("productName"),
+                rs.getString("image"),rs.getString("description"),
+                rs.getString("productCategory"),rs.getFloat("price")        
+                );
+                listSearch.add(pro);
+            }
+        } finally {
+            closeConnection();
+        }
+        return listSearch;
+    }
 }

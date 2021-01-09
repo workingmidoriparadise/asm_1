@@ -11,60 +11,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import khamdd.daos.RegistrationDAO;
-import khamdd.dtos.RegistrationErrorObject;
 
 /**
  *
  * @author KHAM
  */
-public class LoginController extends HttpServlet {
-    private static final String MEMBER = "member.jsp";
-    private static final String ADMIN = "admin.jsp";
-    private static final String ERROR = "error.jsp";
-    private static final String INVALID = "index.jsp";
+public class LogoutController extends HttpServlet {
+
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
         try {
-            String userID = request.getParameter("txtUserID");
-            String password = request.getParameter("txtPassword");
-            RegistrationErrorObject errorObj = new RegistrationErrorObject();
-            boolean check = true;
-            if(userID.length() == 0) {
-                check = false;
-                errorObj.setUserIDError("UserID can't be blank");
-            }
-            if(password.length() == 0) {
-                check = false;
-                errorObj.setPasswordError("Password can't be blank");
-            }
-            
-            if(check == true) {
-                HttpSession session = request.getSession();
-                RegistrationDAO dao = new RegistrationDAO();
-                String role = dao.login(userID, password);
-                session.setAttribute("role", role);
-                if(role.equals("member")) {
-                    url = MEMBER;
-                }
-                else if(role.equals("admin")) {
-                    url = ADMIN;
-                }
-                else {
-                    request.setAttribute("ERROR", "UserID or Password is invalid");
-                }
-            } else {
-                request.setAttribute("INVALID", errorObj);
-                url = INVALID;
-            }
-            
+            HttpSession session = request.getSession();
+            session.setAttribute("role", "guest");
         } catch (Exception e) {
-            log("Error at LoginController: " + e.getMessage());
+            log("Error at LogoutController: " +e.getMessage());
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }
     }
 

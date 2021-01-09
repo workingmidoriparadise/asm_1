@@ -12,6 +12,14 @@
         <servlet-name>SearchController</servlet-name>
         <servlet-class>khamdd.controllers.SearchController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>khamdd.controllers.LogoutController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FirstController</servlet-name>
+        <servlet-class>khamdd.controllers.FirstController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -24,9 +32,20 @@
         <servlet-name>SearchController</servlet-name>
         <url-pattern>/SearchController</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/LogoutController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FirstController</servlet-name>
+        <url-pattern>/FirstController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>FirstController</welcome-file>
+    </welcome-file-list>
 </web-app>

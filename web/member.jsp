@@ -12,6 +12,8 @@
         <title>member Page</title>
     </head>
     <body>
-        <h1>Hello member!</h1>
+        <h1>Welcome member!</h1>
+        <a href="LogoutController">Log out</a>
+
     </body>
 </html>

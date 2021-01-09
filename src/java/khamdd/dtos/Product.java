@@ -14,22 +14,40 @@ import java.util.Date;
  * @author KHAM
  */
 public class Product implements Serializable{
-    private String productName, image, description, category;
+    private String productID, productName, image, description, category;
     Date createDate;
     float price;
-
+    int quantity;
+    
     public Product() {
     }
 
-    public Product(String productName, String image, String description, String category, Date createDate, float price) {
+    public Product(String productID, String productName, String image, String description, String category, float price) {
+        this.productID = productID;
         this.productName = productName;
         this.image = image;
         this.description = description;
         this.category = category;
-        this.createDate = createDate;
         this.price = price;
     }
 
+    
+    public String getProductID() {
+        return productID;
+    }
+
+    public void setProductID(String productID) {
+        this.productID = productID;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+    
     public String getProductName() {
         return productName;
     }

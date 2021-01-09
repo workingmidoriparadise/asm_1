@@ -18,7 +18,7 @@
             <font color="red">
             ${requestScope.INVALID.userIDError}
             </font><br/>
-            Password: <input type="text" name="txtPassword" />
+            Password: <input type="password" name="txtPassword" />
             <font color="red">
             ${requestScope.INVALID.passwordError}
             </font>

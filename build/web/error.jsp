@@ -11,10 +11,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Error Page</title>
     </head>
-    <body>
+    
         <h1>Error Page</h1>
         <font color="red">
         ${requestScope.ERROR}
         </font>
-    </body>
+        <br/>
+        <a href ="index.jsp">Back to login page</a>
+    
 </html>

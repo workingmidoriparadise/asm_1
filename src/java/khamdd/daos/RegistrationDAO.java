@@ -34,7 +34,7 @@ public class RegistrationDAO {
     public String login(String userID, String password) throws Exception {
         String role = "Guest";
         try{
-            String sql = "SELECT role FROM tbl_login WHERE status = 1 and userID = ? and password = ?";
+            String sql = "SELECT role FROM tbl_user WHERE status = 1 and userID = ? and password = ?";
             conn = Connections.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setString(1, userID);

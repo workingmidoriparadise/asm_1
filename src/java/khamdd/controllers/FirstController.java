@@ -6,11 +6,16 @@
 package khamdd.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import khamdd.daos.ProductDAO;
 
 /**
  *
@@ -18,12 +23,17 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class FirstController extends HttpServlet {
 
-    
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            HttpSession session = request.getSession();
+            session.setAttribute("role", "guest");
+        } catch (Exception e) {
+            log("Error at FirstController: " +e.getMessage());
+        } finally {
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

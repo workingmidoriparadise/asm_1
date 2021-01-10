@@ -24,6 +24,7 @@
             </font>
             <br/>
             <input type="submit" name="action" value="Login" /><br/>
+
             Search: <input type="text" name="txtSearch" /> <input type="submit" name="action" value="Search"/><br/>
         </form>
     </body>

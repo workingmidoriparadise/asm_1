@@ -13,16 +13,16 @@ import java.util.Date;
  *
  * @author KHAM
  */
-public class Product implements Serializable{
+public class ProductDTO implements Serializable{
     private String productID, productName, image, description, category;
     Date createDate;
     float price;
     int quantity;
     
-    public Product() {
+    public ProductDTO() {
     }
 
-    public Product(String productID, String productName, String image, String description, String category, float price) {
+    public ProductDTO(String productID, String productName, String image, String description, String category, float price) {
         this.productID = productID;
         this.productName = productName;
         this.image = image;

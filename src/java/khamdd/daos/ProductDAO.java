@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import khamdd.dtos.Product;
+import khamdd.dtos.ProductDTO;
 import khamdd.connections.Connections;
 
 /**
@@ -33,9 +33,9 @@ public class ProductDAO {
             conn.close();
         }
     }
-    
-    public ArrayList searchByName(String nameSearched) throws Exception{
-        ArrayList<Product> listSearch = null;
+
+    public ArrayList searchByName(String nameSearched) throws Exception {
+        ArrayList<ProductDTO> listSearch = null;
         try {
             String sql = "Select productID, productName, price, image, description, productCategory"
                     + " From tbl_product "
@@ -45,11 +45,11 @@ public class ProductDAO {
             ps.setString(1, "%" + nameSearched + "%");
             rs = ps.executeQuery();
             listSearch = new ArrayList<>();
-            while(rs.next()){
-                Product pro = new Product(
-                rs.getString("productID"),rs.getString("productName"),
-                rs.getString("image"),rs.getString("description"),
-                rs.getString("productCategory"),rs.getFloat("price")        
+            while (rs.next()) {
+                ProductDTO pro = new ProductDTO(
+                        rs.getString("productID"), rs.getString("productName"),
+                        rs.getString("image"), rs.getString("description"),
+                        rs.getString("productCategory"), rs.getFloat("price")
                 );
                 listSearch.add(pro);
             }
@@ -58,4 +58,56 @@ public class ProductDAO {
         }
         return listSearch;
     }
+
+    public ArrayList searchByPriceRange(float fromPrice, float toPrice) throws Exception {
+        ArrayList<ProductDTO> listSearched = null;
+        try {
+            String sql = "Select productID, productName, price, image, description, productCategory"
+                    + " From tbl_product "
+                    + "Where status = 1 and price between ? and ? order by createDate";
+
+            conn = Connections.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setFloat(1, fromPrice);
+            ps.setFloat(2, toPrice);
+            rs = ps.executeQuery();
+            listSearched = new ArrayList<>();
+            while (rs.next()) {
+                ProductDTO pro = new ProductDTO(
+                        rs.getString("productID"), rs.getString("productName"),
+                        rs.getString("image"), rs.getString("description"),
+                        rs.getString("productCategory"), rs.getFloat("price")
+                );
+                listSearched.add(pro);
+            }
+        } finally {
+            closeConnection();
+        }
+        return listSearched;
+
+    }
+
+//    public ArrayList get20FirstProducts() throws Exception {
+//        ArrayList<ProductDTO> listProduct = null;
+//        try {
+//            String sql = "Select productID, productName, price, image, description, productCategory"
+//                    + " From tbl_product Limit 10";
+//            conn = Connections.getConnection();
+//            ps = conn.prepareStatement(sql);
+//            rs = ps.executeQuery();
+//            listProduct = new ArrayList<>();
+//
+//            while (rs.next()) {
+//                ProductDTO pro = new ProductDTO(
+//                        rs.getString("productID"), rs.getString("productName"),
+//                        rs.getString("image"), rs.getString("description"),
+//                        rs.getString("productCategory"), rs.getFloat("price")
+//                );
+//                listProduct.add(pro);
+//            }
+//        } finally {
+//            closeConnection();
+//        }
+//        return listProduct;
+//    }
 }

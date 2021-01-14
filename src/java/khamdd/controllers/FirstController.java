@@ -7,15 +7,13 @@ package khamdd.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import khamdd.daos.ProductDAO;
+import khamdd.dtos.ProductDTO;
 
 /**
  *
@@ -29,6 +27,9 @@ public class FirstController extends HttpServlet {
             response.setContentType("text/html;charset=UTF-8");
             HttpSession session = request.getSession();
             session.setAttribute("role", "guest");
+            ProductDAO dao = new ProductDAO();
+            ArrayList<ProductDTO> firstList = dao.searchRandom(1);
+            session.setAttribute("firstList", firstList);
         } catch (Exception e) {
             log("Error at FirstController: " +e.getMessage());
         } finally {

@@ -6,35 +6,50 @@
 package khamdd.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import khamdd.daos.ProductDAO;
+import khamdd.dtos.ProductDTO;
 
 /**
  *
  * @author KHAM
  */
 public class SearchController extends HttpServlet {
-    private static final String MEMBER = "member.jsp";
-    private static final String GUEST = "guest.jsp";
+
     private static final String ERROR = "error.jsp";
-    
+    private static final String MEMBER = "member.jsp";
+    private static final String GUEST = "index.jsp";
+    private static final String ADMIN = "admin.jsp";
+    private static final String INVALID = "index.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
         HttpSession session = request.getSession();
         String role = (String) session.getAttribute("role");
-        if(role.equals("member")) {
-             url = MEMBER;
-        } else {
-            url = GUEST;
-        }
+        String url = ERROR;
+
         try {
-            
+            String searchByName = request.getParameter("txtSearchByName");
+            String fromPrice = request.getParameter("txtFromPrice");
+            String toPrice = request.getParameter("txtToPrice");
+            String searchByCategory = request.getParameter("txtSearchCategory");
+            int index = Integer.parseInt(request.getParameter("page"));
+
+            if (index != 1) {
+                index = (index - 1) * 6 + 1;
+            }
+            ProductDAO dao = new ProductDAO();
+            ArrayList<ProductDTO> listSearched = new ArrayList<>();
+            listSearched = dao.search(searchByName, fromPrice, toPrice, searchByCategory, index);
+            session.setAttribute("listSearched", listSearched);
+            url = GUEST;
+
         } catch (Exception e) {
             log("Error at SearchController: " + e.getMessage());
         } finally {

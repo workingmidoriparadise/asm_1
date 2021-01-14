@@ -20,6 +20,7 @@ public class MainController extends HttpServlet {
     private static final String LOGIN = "LoginController";
     private static final String SEARCH = "SearchController";
     private static final String REGISTRY = "RegistryController";
+    private static final String CHANGEPAGE = "SearchController";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

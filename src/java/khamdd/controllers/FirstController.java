@@ -31,6 +31,7 @@ public class FirstController extends HttpServlet {
             ProductDAO dao = new ProductDAO();
             ArrayList<ProductDTO> listSearched = dao.searchRandom(1);
             session.setAttribute("listSearched", listSearched);
+            session.setAttribute("page", 1);
             int countProduct = dao.countProduct();
             if (countProduct % 6 == 0) {
                  pageCount = countProduct / 6;

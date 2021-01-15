@@ -39,19 +39,21 @@ public class ProductDAO {
         try {
             String sql = "Select productID, productName, price, image, description, productCategoryID"
                     + " From tbl_product "
-                    + "Where status = 1 and productCategory like ? and productName like ? and "
+                    + "Where status = 1 and productCategoryID like ? and productName like ? and "
                     + "price >= ? and price <= ? Order By createDate offset ? rows fetch next ? rows only";
             conn = Connections.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setString(1, "%" + searchCategory + "%");
             ps.setString(2, "%" + searchName + "%");
-            ps.setFloat(3, Float.parseFloat(fromPrice));
-            if (Float.parseFloat(toPrice) == 0f) {
-                ps.setFloat(4, Float.parseFloat(toPrice) + 9999999f);
-            } else {
-                ps.setFloat(4, Float.parseFloat(toPrice));
-
+            if(fromPrice.equals("")){
+                fromPrice = "0";
             }
+            if(toPrice.equals("")){
+                toPrice = "" + Float.MAX_VALUE;
+            }
+            ps.setFloat(3, Float.parseFloat(fromPrice));
+            ps.setFloat(4, Float.parseFloat(toPrice));
+
             ps.setInt(5, index);
             ps.setInt(6, 6);
             rs = ps.executeQuery();

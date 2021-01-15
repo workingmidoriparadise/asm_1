@@ -39,7 +39,7 @@ public class SearchController extends HttpServlet {
             String toPrice = request.getParameter("txtToPrice");
             String searchByCategory = request.getParameter("txtSearchCategory");
             int index = Integer.parseInt(request.getParameter("page"));
-
+            session.setAttribute("page", request.getParameter("page"));
             if (index != 1) {
                 index = (index - 1) * 6 + 1;
             }

@@ -87,7 +87,17 @@
                         <div class="container">
                             <ul class="pagination">
                                 <c:forEach begin="1" end="${sessionScope.pageCount}" varStatus="counter">
-                                    <li><a href="MainController?action=Search&page=${counter.count}&txtSearchByName=&txtFromPrice=&txtToPrice=&txtSearchCategory=">${counter.count}</a></li>
+                                    <c:if test="${counter.count == sessionScope.page}" var="isActive">
+                                        <li class="page-item active">
+                                            <a class="page-link" href="MainController?action=Search&page=${counter.count}&txtSearchByName=&txtFromPrice=&txtToPrice=&txtSearchCategory=">${counter.count}</a>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${!isActive}">
+                                        <li class="page-item">
+                                            <a class="page-link" href="MainController?action=Search&page=${counter.count}&txtSearchByName=&txtFromPrice=&txtToPrice=&txtSearchCategory=">${counter.count}</a>
+                                        </li>
+                                    </c:if>
+
                                 </c:forEach>
                             </ul>
                         </div>

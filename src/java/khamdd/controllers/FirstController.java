@@ -24,17 +24,22 @@ public class FirstController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            int pageCount = 0;
             response.setContentType("text/html;charset=UTF-8");
             HttpSession session = request.getSession();
             session.setAttribute("role", "guest");
             ProductDAO dao = new ProductDAO();
-            ArrayList<ProductDTO> firstList = dao.searchRandom(1);
-            session.setAttribute("firstList", firstList);
+            ArrayList<ProductDTO> listSearched = dao.searchRandom(1);
+            session.setAttribute("listSearched", listSearched);
             int countProduct = dao.countProduct();
-            int pageCount = countProduct/6 + 1;
+            if (countProduct % 6 == 0) {
+                 pageCount = countProduct / 6;
+            } else{
+                pageCount = countProduct / 6 + 1;
+            }
             session.setAttribute("pageCount", pageCount);
         } catch (Exception e) {
-            log("Error at FirstController: " +e.getMessage());
+            log("Error at FirstController: " + e.getMessage());
         } finally {
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }

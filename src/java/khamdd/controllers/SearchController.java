@@ -25,7 +25,6 @@ public class SearchController extends HttpServlet {
     private static final String MEMBER = "member.jsp";
     private static final String GUEST = "index.jsp";
     private static final String ADMIN = "admin.jsp";
-    private static final String INVALID = "index.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,7 +44,7 @@ public class SearchController extends HttpServlet {
                 index = (index - 1) * 6 + 1;
             }
             ProductDAO dao = new ProductDAO();
-            ArrayList<ProductDTO> listSearched = new ArrayList<>();
+            ArrayList<ProductDTO> listSearched = null;
             listSearched = dao.search(searchByName, fromPrice, toPrice, searchByCategory, index);
             session.setAttribute("listSearched", listSearched);
             url = GUEST;

@@ -72,8 +72,7 @@
 
                     <div class="col-md-9">
                         <div class="row">
-                            <c:forEach items="${sessionScope.firstList}" var="list" varStatus="counter">
-
+                            <c:forEach items="${sessionScope.listSearched}" var="list" varStatus="counter">
                                 <div class="col-sm-4 col-lg-4 col-md-4">
                                     <div class="thumbnail">
                                         <img src="${list.image}" alt="">
@@ -84,12 +83,12 @@
                                     </div>
                                 </div>
                             </c:forEach>
-
                         </div>
-                        
                         <div class="container">
                             <ul class="pagination">
-                                <li><a href="MainController?name=action&value=Search&page=2&">2</a></li>
+                                <c:forEach begin="1" end="${sessionScope.pageCount}" varStatus="counter">
+                                    <li><a href="MainController?action=Search&page=${counter.count}&txtSearchByName=&txtFromPrice=&txtToPrice=&txtSearchCategory=">${counter.count}</a></li>
+                                </c:forEach>
                             </ul>
                         </div>
                     </div>

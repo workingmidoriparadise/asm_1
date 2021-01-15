@@ -19,6 +19,9 @@
 
         <!-- Bootstrap Core JavaScript -->
         <script src="js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link href="css/css.css" rel="stylesheet">
 
     </head>
@@ -75,23 +78,24 @@
                                     <div class="thumbnail">
                                         <img src="${list.image}" alt="">
                                         <div class="caption">
-                                            <h4 class="pull-right">${list.price}</h4>
                                             <p class="productName">"${list.productName}</p>
-                                            <input type="button" name="action" value="Add to Cart"/>
+                                            <h4>${list.price}</h4>
                                         </div>
                                     </div>
                                 </div>
                             </c:forEach>
 
                         </div>
-
-                        <div class="pagination">
-                            <a href="MainController?name=action&page=1&value=changePage">1</a>
-                            <a href="MainController?name=action&page=2&value=changePage">2</a>
-                            <a href="MainController?name=action&page=3&value=changePage">3</a>
+                        
+                        <div class="container">
+                            <ul class="pagination">
+                                <li><a href="MainController?name=action&value=Search&page=2&">2</a></li>
+                            </ul>
                         </div>
                     </div>
+
                 </div>
+
             </div>
 
             <!-- /.container -->

@@ -166,4 +166,22 @@ public class ProductDAO {
         return listSearched;
     }
     
+    public int countProduct() throws Exception {
+        int count = 0;
+        try {
+            String sql = "select count(productID) as ? from tbl_product";
+            conn = Connections.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, "count");
+            rs = ps.executeQuery();
+            
+            if(rs.next()){
+                count = rs.getInt("count");
+            }
+        } finally {
+          closeConnection();
+        }
+        return count;
+    }
+    
 }

@@ -30,6 +30,9 @@ public class FirstController extends HttpServlet {
             ProductDAO dao = new ProductDAO();
             ArrayList<ProductDTO> firstList = dao.searchRandom(1);
             session.setAttribute("firstList", firstList);
+            int countProduct = dao.countProduct();
+            int pageCount = countProduct/6 + 1;
+            session.setAttribute("pageCount", pageCount);
         } catch (Exception e) {
             log("Error at FirstController: " +e.getMessage());
         } finally {

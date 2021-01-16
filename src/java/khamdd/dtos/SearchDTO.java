@@ -11,16 +11,34 @@ import java.io.Serializable;
  *
  * @author KHAM
  */
-public class SearchDTO implements Serializable{
-    String name, category, fromPrice, toPrice;
+public class SearchDTO implements Serializable {
+
+    String name, category;
+    float fromPrice, toPrice;
 
     public SearchDTO() {
     }
 
-    public SearchDTO(String name, String category, String fromPrice, String toPrice) {
+    public SearchDTO(String name, String category, float fromPrice, float toPrice) {
         this.name = name;
         this.category = category;
         this.fromPrice = fromPrice;
+        this.toPrice = toPrice;
+    }
+
+    public float getFromPrice() {
+        return fromPrice;
+    }
+
+    public void setFromPrice(float fromPrice) {
+        this.fromPrice = fromPrice;
+    }
+
+    public float getToPrice() {
+        return toPrice;
+    }
+
+    public void setToPrice(float toPrice) {
         this.toPrice = toPrice;
     }
 
@@ -40,21 +58,5 @@ public class SearchDTO implements Serializable{
         this.category = category;
     }
 
-    public String getFromPrice() {
-        return fromPrice;
-    }
 
-    public void setFromPrice(String fromPrice) {
-        this.fromPrice = fromPrice;
-    }
-
-    public String getToPrice() {
-        return toPrice;
-    }
-
-    public void setToPrice(String toPrice) {
-        this.toPrice = toPrice;
-    }
-    
-    
 }

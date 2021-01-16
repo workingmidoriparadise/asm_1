@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import khamdd.daos.ProductDAO;
 import khamdd.dtos.ProductDTO;
+import khamdd.dtos.SearchDTO;
 
 /**
  *
@@ -24,21 +25,24 @@ public class FirstController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            int pageCount = 0;
             response.setContentType("text/html;charset=UTF-8");
             HttpSession session = request.getSession();
             session.setAttribute("role", "guest");
             ProductDAO dao = new ProductDAO();
-            ArrayList<ProductDTO> listSearched = dao.searchRandom(1);
+            SearchDTO searchDTO = new SearchDTO("", "", Float.MIN_VALUE, Float.MAX_VALUE);
+            ArrayList<ProductDTO> listSearched = dao.search(searchDTO, 1);
             session.setAttribute("listSearched", listSearched);
-            session.setAttribute("page", 1);
-            int countProduct = dao.countProduct();
-            if (countProduct % 6 == 0) {
-                 pageCount = countProduct / 6;
-            } else{
-                pageCount = countProduct / 6 + 1;
+            if (session.getAttribute("page") == null) {
+                session.setAttribute("page", 1);
             }
-            session.setAttribute("pageCount", pageCount);
+            session.setAttribute("listCategory", dao.getListCategory());
+            int page = dao.count(searchDTO);
+            if (page % 6 == 0) {
+                page = page / 6;
+            } else {
+                page = page / 6 + 1;
+            }
+            session.setAttribute("pageCount", page);
         } catch (Exception e) {
             log("Error at FirstController: " + e.getMessage());
         } finally {

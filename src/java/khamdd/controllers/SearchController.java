@@ -33,63 +33,53 @@ public class SearchController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
         String role = (String) session.getAttribute("role");
-        String url = ERROR;
-
+        String url = GUEST;
+        float min, max;
+        min = Float.MIN_VALUE;
+        max = Float.MAX_VALUE;
         try {
-            url = GUEST;
-            boolean check = true;
+            session.setAttribute("errorInput", false);
             String searchByName = request.getParameter("txtSearchByName");
             String fromPrice = request.getParameter("txtFromPrice");
             String toPrice = request.getParameter("txtToPrice");
             String searchByCategory = request.getParameter("txtSearchCategory");
-            if (fromPrice.equals("")) {
-                fromPrice = "0" + fromPrice;
+            if (!fromPrice.equals("")) {
+                min = Float.parseFloat(fromPrice);
+            } else {
+                fromPrice = "" + min;
             }
-            if (toPrice.equals("")) {
-                toPrice = "0" + toPrice;
+            if (!toPrice.equals("")) {
+                max = Float.parseFloat(toPrice);
+            } else {
+                toPrice = "" + max;
             }
             try {
                 Float.parseFloat(fromPrice);
-            } catch (Exception e) {
-                SearchErrorObject searchError = new SearchErrorObject();
-                searchError.setErrorFromPrice("Your value is invalid (number only)");
-                session.setAttribute("searchError", searchError);
-                request.getRequestDispatcher(url).forward(request, response);
-            }
-            try {
                 Float.parseFloat(toPrice);
             } catch (Exception e) {
-                SearchErrorObject searchError = new SearchErrorObject();
-                searchError.setErrorToPrice("Your value is invalid (number only)");
-                session.setAttribute("searchError", searchError);
+                session.setAttribute("errorInput", true);
                 request.getRequestDispatcher(url).forward(request, response);
             }
             SearchDTO searchDTO = new SearchDTO();
             searchDTO.setName(searchByName);
             searchDTO.setCategory(searchByCategory);
-            if (fromPrice.equals("0")) {
-                searchDTO.setFromPrice("");
-            } else {
-                searchDTO.setFromPrice(fromPrice);
-            }
-            if (toPrice.equals("0")) {
-                searchDTO.setToPrice("");
-            } else {
-                searchDTO.setToPrice(toPrice);
-            }
-            session.setAttribute("searchDTO", searchDTO);
+            searchDTO.setFromPrice(min);
+            searchDTO.setToPrice(max);
+
             int index = Integer.parseInt(request.getParameter("page"));
             session.setAttribute("page", request.getParameter("page"));
             if (index != 1) {
-                index = (index - 1) * 6 + 1;
+                index = (index - 1) * 6;
             }
             ProductDAO dao = new ProductDAO();
             ArrayList<ProductDTO> listSearched = null;
-            listSearched = dao.search(searchByName, fromPrice, toPrice, searchByCategory, index);
+            listSearched = dao.search(searchDTO, index);
             session.setAttribute("listSearched", listSearched);
-            int pageCount = dao.count(searchByName, fromPrice, toPrice, searchByCategory) / 6;
-            if (pageCount == 0) {
-                pageCount++;
+            int pageCount = dao.count(searchDTO);
+            if (pageCount % 6 != 0) {
+                pageCount = pageCount / 6 + 1;
+            } else {
+                pageCount = pageCount / 6;
             }
             session.setAttribute("pageCount", pageCount);
         } catch (Exception e) {

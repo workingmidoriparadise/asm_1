@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import khamdd.dtos.ProductDTO;
 import khamdd.connections.Connections;
+import khamdd.dtos.SearchDTO;
 
 /**
  *
@@ -34,38 +35,28 @@ public class ProductDAO {
         }
     }
 
-    public ArrayList search(String searchName, String fromPrice, String toPrice, String searchCategory, int index) throws Exception {
+    public ArrayList search(SearchDTO dto, int index) throws Exception {
         ArrayList<ProductDTO> listSearched = null;
         try {
-            String sql = "Select productID, productName, price, image, description, productCategoryID"
-                    + " From tbl_product "
-                    + "Where status = 1 and quantity > 0 and productCategoryID like ? and productName like ? and "
-                    + "price >= ? and price <= ? Order By createDate offset ? rows fetch next ? rows only";
+            String sql = "Select tbl_product.productID, tbl_product.productName, tbl_product.price, tbl_product.image, tbl_product.description"
+                    + " From tbl_product inner join tbl_productCategory"
+                    + " on tbl_product.productCategoryID = tbl_productCategory.productCategoryID"
+                    + " Where tbl_product.status = 1 and tbl_product.quantity > 0 and tbl_productCategory.productCategoryName like ? and tbl_product.productName like ? and"
+                    + " tbl_product.price >= ? and tbl_product.price <= ? Order By createDate offset ? rows fetch next ? rows only";
             conn = Connections.getConnection();
             ps = conn.prepareStatement(sql);
-            ps.setString(1, "%" + searchCategory + "%");
-            ps.setString(2, "%" + searchName + "%");
-            if (fromPrice.equals("")) {
-                fromPrice = "0";
-            }
-            if (toPrice.equals("") || toPrice.equals("0")) {
-                toPrice = "" + Float.MAX_VALUE;
-            }
-            ps.setFloat(3, Float.parseFloat(fromPrice));
-            ps.setFloat(4, Float.parseFloat(toPrice));
+            ps.setString(1, "%" + dto.getCategory() + "%");
+            ps.setString(2, "%" + dto.getName() + "%");
+            ps.setFloat(3, dto.getFromPrice());
+            ps.setFloat(4, dto.getToPrice());
             ps.setInt(5, index);
-            if (index == 19) {
-                ps.setInt(6, 2);
-            } else {
-                ps.setInt(6, 6);
-            }
+            ps.setInt(6, 6);
             rs = ps.executeQuery();
             listSearched = new ArrayList<>();
             while (rs.next()) {
-                ProductDTO dto = new ProductDTO(rs.getString("productID"), rs.getString("productName"),
-                        rs.getString("image"), rs.getString("description"), rs.getString("productCategoryID"),
-                        rs.getFloat("price"));
-                listSearched.add(dto);
+                ProductDTO proDTO = new ProductDTO(rs.getString("productName"),
+                        rs.getString("image"), rs.getString("description"), rs.getFloat("price"));
+                listSearched.add(proDTO);
             }
         } finally {
             closeConnection();
@@ -73,36 +64,19 @@ public class ProductDAO {
         return listSearched;
     }
 
-    public ArrayList searchRandom(int index) throws Exception {
-        ArrayList<ProductDTO> listSearched = null;
-        try {
-            String sql = "Select productID, productName, price, image, description, productCategoryID"
-                    + " From tbl_product "
-                    + "Where status = 1 and quantity > 0 Order By createDate offset ? rows fetch next ? rows only";
-            conn = Connections.getConnection();
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, index);
-            ps.setInt(2, 6);
-            rs = ps.executeQuery();
-            listSearched = new ArrayList<>();
-            while (rs.next()) {
-                ProductDTO dto = new ProductDTO(rs.getString("productID"), rs.getString("productName"),
-                        rs.getString("image"), rs.getString("description"), rs.getString("productCategoryID"),
-                        rs.getFloat("price"));
-                listSearched.add(dto);
-            }
-        } finally {
-            closeConnection();
-        }
-        return listSearched;
-    }
-
-    public int countProduct() throws Exception {
+    public int count(SearchDTO dto) throws Exception {
         int count = 0;
         try {
-            String sql = "select count(productID) as count from tbl_product where status = 1 and quantity > 0";
+            String sql = "Select count(tbl_product.productID) as count"
+                    + " From tbl_product inner join tbl_productCategory on tbl_product.productCategoryID = tbl_productCategory.productCategoryID"
+                    + " Where status = 1 and quantity > 0 and tbl_productCategory.productCategoryName like ? and productName like ? and "
+                    + "price >= ? and price <= ?";
             conn = Connections.getConnection();
             ps = conn.prepareStatement(sql);
+            ps.setString(1, "%" + dto.getCategory()+ "%");
+            ps.setString(2, "%" + dto.getName() + "%");
+            ps.setFloat(3, dto.getFromPrice());
+            ps.setFloat(4, dto.getToPrice());
             rs = ps.executeQuery();
             if (rs.next()) {
                 count = rs.getInt("count");
@@ -113,32 +87,22 @@ public class ProductDAO {
         return count;
     }
 
-    public int count(String searchName, String fromPrice, String toPrice, String searchCategory) throws Exception {
-        int count = 0;
+    public ArrayList<ProductDTO> getListCategory() throws Exception {
+        ArrayList<ProductDTO> listCategory = null;
         try {
-            String sql = "Select count(productID) as count"
-                    + " From tbl_product "
-                    + "Where status = 1 and quantity > 0 and productCategoryID like ? and productName like ? and "
-                    + "price >= ? and price <= ?";
+            String sql = "Select productCategoryName from tbl_productCategory";
             conn = Connections.getConnection();
             ps = conn.prepareStatement(sql);
-            ps.setString(1, "%" + searchCategory + "%");
-            ps.setString(2, "%" + searchName + "%");
-            if (fromPrice.equals("")) {
-                fromPrice = "0";
-            }
-            if (toPrice.equals("") || toPrice.equals("0")) {
-                toPrice = "" + Float.MAX_VALUE;
-            }
-            ps.setFloat(3, Float.parseFloat(fromPrice));
-            ps.setFloat(4, Float.parseFloat(toPrice));
             rs = ps.executeQuery();
-            if(rs.next()) {
-                count = rs.getInt("count");
+            listCategory = new ArrayList<>();
+            while (rs.next()) {
+                ProductDTO dto = new ProductDTO();
+                dto.setCategory(rs.getString("productCategoryName"));
+                listCategory.add(dto);
             }
         } finally {
             closeConnection();
         }
-        return count;
+        return listCategory;
     }
 }

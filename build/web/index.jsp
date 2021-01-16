@@ -23,6 +23,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link href="css/css.css" rel="stylesheet">
+        <script src="js/myJs.js"></script>
 
     </head>
     <body>
@@ -63,18 +64,20 @@
                     <div class="col-md-3">
                         <p class="lead">Search</p>
                         <div class="list-group">
-                            <input type="text" name="txtSearchByName" placeholder="Product's name" value="${sessionScope.searchDTO.name}"/><br/>
-                            <input type="text" name="txtFromPrice" placeholder="Min Price" value="${sessionScope.searchDTO.fromPrice}"/>
-                            <font color="red">
-                            ${sessionScope.searchError.errorFromPrice}
-                            </font><br/>
-                            <input type="text" name="txtToPrice" placeholder="Max Price" value="${sessionScope.searchDTO.toPrice}"/>
-                            <font color="red">
-                            ${sessionScope.searchError.errorToPrice}
-                            </font><br/>
-                            <input type="text" name="txtSearchCategory" placeholder="Product's Category" value="${sessionScope.searchDTO.category}"/><br/>
+                            <input type="text" name="txtSearchByName" placeholder="Product's name" value="${param.txtSearchByName}"/><br/>
+                            <input type="text" name="txtFromPrice" placeholder="Min Price" value="${param.txtFromPrice}"/><br/>
+                            <input type="text" name="txtToPrice" placeholder="Max Price" value="${txtToPrice}"/><br/>
+                            <select name="txtSearchCategory">
+                                <option value=""></option>
+                                <c:forEach items="${sessionScope.listCategory}" var="dto" varStatus="counter">
+                                    <option value="${dto.category}" <c:if test="${param.txtSearchCategory == dto.category}">selected="true"</c:if>>${dto.category}</option>
+                                </c:forEach>
+                            </select>
                             <input type="hidden" name="page" value="1"/>
                             <input type="submit" name="action" value="Search"/>
+                            <c:if test="${sessionScope.errorInput}">
+                                <script> alertErrorInput()</script>
+                            </c:if>
                         </div>
                     </div>
 
@@ -95,17 +98,9 @@
                         <div class="container">
                             <ul class="pagination">
                                 <c:forEach begin="1" end="${sessionScope.pageCount}" varStatus="counter">
-                                    <c:if test="${counter.count == sessionScope.page}" var="isActive">
-                                        <li class="page-item active">
-                                            <a class="page-link" href="MainController?action=Search&page=${counter.count}&txtSearchByName=&txtFromPrice=&txtToPrice=&txtSearchCategory=">${counter.count}</a>
-                                        </li>
-                                    </c:if>
-                                    <c:if test="${!isActive}">
-                                        <li class="page-item">
-                                            <a class="page-link" href="MainController?action=Search&page=${counter.count}&txtSearchByName=&txtFromPrice=&txtToPrice=&txtSearchCategory=">${counter.count}</a>
-                                        </li>
-                                    </c:if>
-
+                                    <li class="page-item <c:if test="${counter.count == sessionScope.page}">active</c:if>">
+                                        <a class="page-link" href="MainController?action=Search&page=${counter.count}&txtSearchByName=${param.txtSearchByName}&txtFromPrice=${param.txtFromPrice}&txtToPrice=${param.txtToPrice}&txtSearchCategory=${param.txtSearchCategory}">${counter.count}</a>
+                                    </li>
                                 </c:forEach>
                             </ul>
                         </div>
@@ -115,10 +110,6 @@
 
             </div>
 
-            <!-- /.container -->
-            <div class="container">
-                <hr>
-            </div>
             <!-- /.container -->
         </form>
     </body>

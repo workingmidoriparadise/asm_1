@@ -39,23 +39,26 @@ public class ProductDAO {
         try {
             String sql = "Select productID, productName, price, image, description, productCategoryID"
                     + " From tbl_product "
-                    + "Where status = 1 and productCategoryID like ? and productName like ? and "
+                    + "Where status = 1 and quantity > 0 and productCategoryID like ? and productName like ? and "
                     + "price >= ? and price <= ? Order By createDate offset ? rows fetch next ? rows only";
             conn = Connections.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setString(1, "%" + searchCategory + "%");
             ps.setString(2, "%" + searchName + "%");
-            if(fromPrice.equals("")){
+            if (fromPrice.equals("")) {
                 fromPrice = "0";
             }
-            if(toPrice.equals("")){
+            if (toPrice.equals("") || toPrice.equals("0")) {
                 toPrice = "" + Float.MAX_VALUE;
             }
             ps.setFloat(3, Float.parseFloat(fromPrice));
             ps.setFloat(4, Float.parseFloat(toPrice));
-
             ps.setInt(5, index);
-            ps.setInt(6, 6);
+            if (index == 19) {
+                ps.setInt(6, 2);
+            } else {
+                ps.setInt(6, 6);
+            }
             rs = ps.executeQuery();
             listSearched = new ArrayList<>();
             while (rs.next()) {
@@ -75,7 +78,7 @@ public class ProductDAO {
         try {
             String sql = "Select productID, productName, price, image, description, productCategoryID"
                     + " From tbl_product "
-                    + "Where status = 1 Order By createDate offset ? rows fetch next ? rows only";
+                    + "Where status = 1 and quantity > 0 Order By createDate offset ? rows fetch next ? rows only";
             conn = Connections.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setInt(1, index);
@@ -97,7 +100,7 @@ public class ProductDAO {
     public int countProduct() throws Exception {
         int count = 0;
         try {
-            String sql = "select count(productID) as count from tbl_product";
+            String sql = "select count(productID) as count from tbl_product where status = 1 and quantity > 0";
             conn = Connections.getConnection();
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -110,4 +113,32 @@ public class ProductDAO {
         return count;
     }
 
+    public int count(String searchName, String fromPrice, String toPrice, String searchCategory) throws Exception {
+        int count = 0;
+        try {
+            String sql = "Select count(productID) as count"
+                    + " From tbl_product "
+                    + "Where status = 1 and quantity > 0 and productCategoryID like ? and productName like ? and "
+                    + "price >= ? and price <= ?";
+            conn = Connections.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, "%" + searchCategory + "%");
+            ps.setString(2, "%" + searchName + "%");
+            if (fromPrice.equals("")) {
+                fromPrice = "0";
+            }
+            if (toPrice.equals("") || toPrice.equals("0")) {
+                toPrice = "" + Float.MAX_VALUE;
+            }
+            ps.setFloat(3, Float.parseFloat(fromPrice));
+            ps.setFloat(4, Float.parseFloat(toPrice));
+            rs = ps.executeQuery();
+            if(rs.next()) {
+                count = rs.getInt("count");
+            }
+        } finally {
+            closeConnection();
+        }
+        return count;
+    }
 }

@@ -63,9 +63,17 @@
                     <div class="col-md-3">
                         <p class="lead">Search</p>
                         <div class="list-group">
-                            <input type="text" name="txtSearchByName" placeholder="Product's name"><br/>
-                            <input type="text" name="txtFromPrice" placeholder="Min Price"/> <input type="text" name="txtToPrice" placeholder="Max Price"/><br/>
-                            <input type="text" name="txtSearchCategory" placeholder="Product's Category"/><br/>
+                            <input type="text" name="txtSearchByName" placeholder="Product's name" value="${sessionScope.searchDTO.name}"/><br/>
+                            <input type="text" name="txtFromPrice" placeholder="Min Price" value="${sessionScope.searchDTO.fromPrice}"/>
+                            <font color="red">
+                            ${sessionScope.searchError.errorFromPrice}
+                            </font><br/>
+                            <input type="text" name="txtToPrice" placeholder="Max Price" value="${sessionScope.searchDTO.toPrice}"/>
+                            <font color="red">
+                            ${sessionScope.searchError.errorToPrice}
+                            </font><br/>
+                            <input type="text" name="txtSearchCategory" placeholder="Product's Category" value="${sessionScope.searchDTO.category}"/><br/>
+                            <input type="hidden" name="page" value="1"/>
                             <input type="submit" name="action" value="Search"/>
                         </div>
                     </div>
@@ -77,7 +85,7 @@
                                     <div class="thumbnail">
                                         <img src="${list.image}" alt="">
                                         <div class="caption">
-                                            <p class="productName">"${list.productName}</p>
+                                            <p class="productName">${list.productName}</p>
                                             <h4>${list.price}</h4>
                                         </div>
                                     </div>

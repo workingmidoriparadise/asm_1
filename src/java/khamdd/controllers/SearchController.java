@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import khamdd.daos.ProductDAO;
 import khamdd.dtos.ProductDTO;
+import khamdd.dtos.SearchDTO;
+import khamdd.dtos.SearchErrorObject;
 
 /**
  *
@@ -34,10 +36,48 @@ public class SearchController extends HttpServlet {
         String url = ERROR;
 
         try {
+            url = GUEST;
+            boolean check = true;
             String searchByName = request.getParameter("txtSearchByName");
             String fromPrice = request.getParameter("txtFromPrice");
             String toPrice = request.getParameter("txtToPrice");
             String searchByCategory = request.getParameter("txtSearchCategory");
+            if (fromPrice.equals("")) {
+                fromPrice = "0" + fromPrice;
+            }
+            if (toPrice.equals("")) {
+                toPrice = "0" + toPrice;
+            }
+            try {
+                Float.parseFloat(fromPrice);
+            } catch (Exception e) {
+                SearchErrorObject searchError = new SearchErrorObject();
+                searchError.setErrorFromPrice("Your value is invalid (number only)");
+                session.setAttribute("searchError", searchError);
+                request.getRequestDispatcher(url).forward(request, response);
+            }
+            try {
+                Float.parseFloat(toPrice);
+            } catch (Exception e) {
+                SearchErrorObject searchError = new SearchErrorObject();
+                searchError.setErrorToPrice("Your value is invalid (number only)");
+                session.setAttribute("searchError", searchError);
+                request.getRequestDispatcher(url).forward(request, response);
+            }
+            SearchDTO searchDTO = new SearchDTO();
+            searchDTO.setName(searchByName);
+            searchDTO.setCategory(searchByCategory);
+            if (fromPrice.equals("0")) {
+                searchDTO.setFromPrice("");
+            } else {
+                searchDTO.setFromPrice(fromPrice);
+            }
+            if (toPrice.equals("0")) {
+                searchDTO.setToPrice("");
+            } else {
+                searchDTO.setToPrice(toPrice);
+            }
+            session.setAttribute("searchDTO", searchDTO);
             int index = Integer.parseInt(request.getParameter("page"));
             session.setAttribute("page", request.getParameter("page"));
             if (index != 1) {
@@ -47,8 +87,11 @@ public class SearchController extends HttpServlet {
             ArrayList<ProductDTO> listSearched = null;
             listSearched = dao.search(searchByName, fromPrice, toPrice, searchByCategory, index);
             session.setAttribute("listSearched", listSearched);
-            url = GUEST;
-
+            int pageCount = dao.count(searchByName, fromPrice, toPrice, searchByCategory) / 6;
+            if (pageCount == 0) {
+                pageCount++;
+            }
+            session.setAttribute("pageCount", pageCount);
         } catch (Exception e) {
             log("Error at SearchController: " + e.getMessage());
         } finally {

@@ -25,6 +25,7 @@ public class LogoutController extends HttpServlet {
         try {
             HttpSession session = request.getSession();
             session.setAttribute("role", "guest");
+            session.setAttribute("fullname", "guest");
         } catch (Exception e) {
             log("Error at LogoutController: " +e.getMessage());
         } finally {

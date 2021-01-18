@@ -20,34 +20,41 @@ import khamdd.dtos.SearchDTO;
  *
  * @author KHAM
  */
-public class FirstController extends HttpServlet {
+public class FirstUpdateController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+
         try {
-            response.setContentType("text/html;charset=UTF-8");
+            String updatePage = request.getParameter("updatePage");
+            if (updatePage == null) {
+                updatePage = "1";
+            }
             HttpSession session = request.getSession();
-            session.setAttribute("role", "guest");
+            int page = Integer.parseInt(updatePage);
+            if (page != 1) {
+                page = (page - 1) * 6;
+            }
+            ArrayList<ProductDTO> listUpdate = new ArrayList<>();
             ProductDAO dao = new ProductDAO();
-            SearchDTO searchDTO = new SearchDTO("", "", Float.MIN_VALUE, Float.MAX_VALUE);
-            ArrayList<ProductDTO> listSearched = dao.searchForUpdate(searchDTO, 1);
-            session.setAttribute("listSearched", listSearched);
-            if (session.getAttribute("page") == null) {
-                session.setAttribute("page", 1);
-            }
-            session.setAttribute("listCategory", dao.getListCategory());
-            int page = dao.count(searchDTO);
-            if (page % 6 == 0) {
-                page = page / 6;
+            SearchDTO dto = new SearchDTO("", "", Float.MIN_VALUE, Float.MAX_VALUE);
+            int pageCount = dao.count(dto);
+            if (pageCount % 6 != 0) {
+                pageCount = pageCount / 6 + 1;
             } else {
-                page = page / 6 + 1;
+                pageCount = pageCount / 6;
             }
-            session.setAttribute("pageCount", page);
+            session.setAttribute("pageCount", pageCount);
+            session.setAttribute("updatePage", updatePage);
+            listUpdate = dao.searchForUpdate(dto, page);
+            session.setAttribute("listUpdate", listUpdate);
         } catch (Exception e) {
-            log("Error at FirstController: " + e.getMessage());
+            log("Error at FirstUpdateController: " + e.getMessage());
         } finally {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("update.jsp").forward(request, response);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -88,5 +95,4 @@ public class FirstController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }

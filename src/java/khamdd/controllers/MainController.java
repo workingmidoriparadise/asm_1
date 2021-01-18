@@ -19,7 +19,14 @@ public class MainController extends HttpServlet {
     private static final String ERROR = "error.jsp";
     private static final String LOGIN = "LoginController";
     private static final String SEARCH = "SearchController";
-    private static final String REGISTRY = "RegistryController";
+    private static final String FIRSTUPDATE = "FirstUpdateController";
+    private static final String DELETE = "DeleteController";
+    private static final String UPDATE = "UpdateController";
+    private static final String ADDTOCART = "AddToCartController";
+    private static final String LOGOUT = "LogoutController";
+    private static final String UPDATECART = "UpdateCartController";
+    private static final String DELETECART  = "DeleteCartController";
+    private static final String CONFIRMCART = "ConfirmCartController";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -31,6 +38,22 @@ public class MainController extends HttpServlet {
                 url = LOGIN;
             } if(action.equals("Search")){
                 url = SEARCH;
+            } if(action.equals("FirstUpdate")){
+                url = FIRSTUPDATE;
+            } if(action.equals("Delete")){
+                url = DELETE;
+            } if(action.equals("Update")){
+                url = UPDATE;
+            } if(action.equals("Add to cart")){
+                url = ADDTOCART;
+            } if(action.equals("Logout")){
+                url = LOGOUT;
+            } if(action.equals("UpdateCart")){
+                url = UPDATECART;
+            } if(action.equals("DeleteCart")){
+                url = DELETECART;
+            } if(action.equals("ConfirmCart")){
+                url = CONFIRMCART;
             }
             else {
                 request.setAttribute("ERROR", "Your action is invalid");

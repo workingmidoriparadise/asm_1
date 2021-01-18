@@ -11,16 +11,25 @@ import java.io.Serializable;
  *
  * @author KHAM
  */
-public class RegistrationDTO implements Serializable{
-    private String userID, password, role;
+public class RegistrationDTO implements Serializable {
+
+    private String userID, password, role, fullname;
 
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(String userID, String password, String role) {
+    public RegistrationDTO(String userID, String fullname, String role) {
         this.userID = userID;
-        this.password = password;
+        this.fullname = fullname;
         this.role = role;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getUserID() {
@@ -46,6 +55,5 @@ public class RegistrationDTO implements Serializable{
     public void setRole(String role) {
         this.role = role;
     }
-    
-    
+
 }

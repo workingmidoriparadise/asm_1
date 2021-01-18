@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/controllers/FirstController.java</file>
-            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/controllers/SearchController.java</file>
-            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/web/index.jsp</file>
-            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/daos/ProductDAO.java</file>
-            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/dtos/ProductDTO.java</file>
+            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/dtos/CartObj.java</file>
+            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/dtos/MyOrderDTO.java</file>
+            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/controllers/ConfirmCartController.java</file>
+            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/controllers/MainController.java</file>
+            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/web/view.jsp</file>
         </group>
     </open-files>
 </project-private>

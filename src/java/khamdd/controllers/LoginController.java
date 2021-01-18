@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import khamdd.daos.RegistrationDAO;
+import khamdd.dtos.RegistrationDTO;
 import khamdd.dtos.RegistrationErrorObject;
 
 /**
@@ -45,8 +46,12 @@ public class LoginController extends HttpServlet {
             if(check == true) {
                 HttpSession session = request.getSession();
                 RegistrationDAO dao = new RegistrationDAO();
-                String role = dao.login(userID, password);
+                RegistrationDTO dto = dao.login(userID, password);
+                String role = dto.getRole();
+                String fullname = dto.getFullname();
                 session.setAttribute("role", role);
+                session.setAttribute("fullname", fullname);
+                session.setAttribute("userID", dto.getUserID());
                 if(role.equals("member")) {
                     url = MEMBER;
                 }

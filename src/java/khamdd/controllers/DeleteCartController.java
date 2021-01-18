@@ -6,47 +6,33 @@
 package khamdd.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import khamdd.daos.ProductDAO;
-import khamdd.dtos.ProductDTO;
-import khamdd.dtos.SearchDTO;
+import khamdd.dtos.CartObj;
 
 /**
  *
  * @author KHAM
  */
-public class FirstController extends HttpServlet {
+public class DeleteCartController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        
         try {
-            response.setContentType("text/html;charset=UTF-8");
             HttpSession session = request.getSession();
-            session.setAttribute("role", "guest");
-            ProductDAO dao = new ProductDAO();
-            SearchDTO searchDTO = new SearchDTO("", "", Float.MIN_VALUE, Float.MAX_VALUE);
-            ArrayList<ProductDTO> listSearched = dao.searchForUpdate(searchDTO, 1);
-            session.setAttribute("listSearched", listSearched);
-            if (session.getAttribute("page") == null) {
-                session.setAttribute("page", 1);
-            }
-            session.setAttribute("listCategory", dao.getListCategory());
-            int page = dao.count(searchDTO);
-            if (page % 6 == 0) {
-                page = page / 6;
-            } else {
-                page = page / 6 + 1;
-            }
-            session.setAttribute("pageCount", page);
+            String productID = request.getParameter("txtProductID");
+            CartObj cart = (CartObj) session.getAttribute("cart");
+            cart.removeCart(productID);
         } catch (Exception e) {
-            log("Error at FirstController: " + e.getMessage());
-        } finally {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            log("Error at DeleteCartController: " +e.getMessage());
+        }finally{
+            response.sendRedirect("view.jsp");
         }
     }
 

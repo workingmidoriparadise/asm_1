@@ -6,47 +6,42 @@
 package khamdd.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import khamdd.daos.ProductDAO;
-import khamdd.dtos.ProductDTO;
-import khamdd.dtos.SearchDTO;
+import khamdd.dtos.CartObj;
+import khamdd.dtos.MyOrderDTO;
 
 /**
  *
  * @author KHAM
  */
-public class FirstController extends HttpServlet {
+public class AddToCartController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         try {
-            response.setContentType("text/html;charset=UTF-8");
             HttpSession session = request.getSession();
-            session.setAttribute("role", "guest");
-            ProductDAO dao = new ProductDAO();
-            SearchDTO searchDTO = new SearchDTO("", "", Float.MIN_VALUE, Float.MAX_VALUE);
-            ArrayList<ProductDTO> listSearched = dao.searchForUpdate(searchDTO, 1);
-            session.setAttribute("listSearched", listSearched);
-            if (session.getAttribute("page") == null) {
-                session.setAttribute("page", 1);
+            CartObj cart = (CartObj) session.getAttribute("cart");
+            String productID = request.getParameter("txtAddProductID");
+            String productName = request.getParameter("txtAddProductName");
+            String price = request.getParameter("txtAddPrice");
+            String image = request.getParameter("txtAddImage");
+
+            if (cart == null) {
+                cart = new CartObj(session.getAttribute("fullname").toString());
             }
-            session.setAttribute("listCategory", dao.getListCategory());
-            int page = dao.count(searchDTO);
-            if (page % 6 == 0) {
-                page = page / 6;
-            } else {
-                page = page / 6 + 1;
-            }
-            session.setAttribute("pageCount", page);
+            MyOrderDTO dto = new MyOrderDTO(productID, productName, image, Float.parseFloat(price));
+            dto.setQuantity(1);
+            cart.addCart(dto);
+            session.setAttribute("cart", cart);
         } catch (Exception e) {
-            log("Error at FirstController: " + e.getMessage());
+            log("Error at AddToCartController: " + e.getMessage());
         } finally {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("member.jsp").forward(request, response);
         }
     }
 

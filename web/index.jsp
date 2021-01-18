@@ -66,11 +66,11 @@
                         <div class="list-group">
                             <input type="text" name="txtSearchByName" placeholder="Product's name" value="${param.txtSearchByName}"/><br/>
                             <input type="text" name="txtFromPrice" placeholder="Min Price" value="${param.txtFromPrice}"/><br/>
-                            <input type="text" name="txtToPrice" placeholder="Max Price" value="${txtToPrice}"/><br/>
+                            <input type="text" name="txtToPrice" placeholder="Max Price" value="${param.txtToPrice}"/><br/>
                             <select name="txtSearchCategory">
                                 <option value=""></option>
                                 <c:forEach items="${sessionScope.listCategory}" var="dto" varStatus="counter">
-                                    <option value="${dto.category}" <c:if test="${param.txtSearchCategory == dto.category}">selected="true"</c:if>>${dto.category}</option>
+                                    <option value="${dto.category}" <c:if test="${param.txtSearchCategory == dto.category}">selected=true</c:if>>${dto.category}</option>
                                 </c:forEach>
                             </select>
                             <input type="hidden" name="page" value="1"/>
@@ -89,7 +89,7 @@
                                         <img src="${list.image}" alt="">
                                         <div class="caption">
                                             <p class="productName">${list.productName}</p>
-                                            <h4>${list.price}</h4>
+                                            <h4>${list.price}đ</h4>
                                         </div>
                                     </div>
                                 </div>

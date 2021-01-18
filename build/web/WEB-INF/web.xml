@@ -20,6 +20,34 @@
         <servlet-name>FirstController</servlet-name>
         <servlet-class>khamdd.controllers.FirstController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>FirstUpdateController</servlet-name>
+        <servlet-class>khamdd.controllers.FirstUpdateController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateController</servlet-name>
+        <servlet-class>khamdd.controllers.UpdateController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteController</servlet-name>
+        <servlet-class>khamdd.controllers.DeleteController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddToCartController</servlet-name>
+        <servlet-class>khamdd.controllers.AddToCartController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateCartController</servlet-name>
+        <servlet-class>khamdd.controllers.UpdateCartController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteCartController</servlet-name>
+        <servlet-class>khamdd.controllers.DeleteCartController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ConfirmCartController</servlet-name>
+        <servlet-class>khamdd.controllers.ConfirmCartController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -39,6 +67,34 @@
     <servlet-mapping>
         <servlet-name>FirstController</servlet-name>
         <url-pattern>/FirstController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FirstUpdateController</servlet-name>
+        <url-pattern>/FirstUpdateController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateController</servlet-name>
+        <url-pattern>/UpdateController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteController</servlet-name>
+        <url-pattern>/DeleteController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToCartController</servlet-name>
+        <url-pattern>/AddToCartController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCartController</servlet-name>
+        <url-pattern>/UpdateCartController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteCartController</servlet-name>
+        <url-pattern>/DeleteCartController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConfirmCartController</servlet-name>
+        <url-pattern>/ConfirmCartController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

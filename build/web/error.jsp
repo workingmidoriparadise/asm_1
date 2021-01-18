@@ -4,6 +4,7 @@
     Author     : KHAM
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,6 +18,9 @@
         ${requestScope.ERROR}
         </font>
         <br/>
+        <c:if test="${sessionScope.error ==  'Delete failed'}">
+            <a href ="update.jsp">Back to update page</a>
+        </c:if>
         <a href ="index.jsp">Back to login page</a>
-    
+        
 </html>

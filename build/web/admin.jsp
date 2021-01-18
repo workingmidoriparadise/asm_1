@@ -42,13 +42,16 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
+                            <a href="#">Welcome, ${sessionScope.fullname}</a>
+                        </li>
+                        <li>
                             <a href="index.jsp">Home</a>
                         </li>
                         <li>
-                            <a href="login.jsp">Login</a>
+                            <a href="MainController?action=Logout">Logout</a>
                         </li>
                         <li>
-                            <a href="#">Welcome ${sessionScope.role}</a>
+                            <a href="MainController?action=FirstUpdate">Update Product</a>
                         </li>
                     </ul>
                 </div>
@@ -66,10 +69,20 @@
                     <div class="col-md-3">
                         <p class="lead">Search</p>
                         <div class="list-group">
-                            <input type="text" name="txtSearchByName" placeholder="Product's name"><br/>
-                            <input type="text" name="txtFromPrice" placeholder="Min Price"/> <input type="text" name="txtToPrice" placeholder="Max Price"/><br/>
-                            <input type="text" name="txtSearchCategory" placeholder="Product's Category"/><br/>
+                            <input type="text" name="txtSearchByName" placeholder="Product's name" value="${param.txtSearchByName}"/><br/>
+                            <input type="text" name="txtFromPrice" placeholder="Min Price" value="${param.txtFromPrice}"/><br/>
+                            <input type="text" name="txtToPrice" placeholder="Max Price" value="${param.txtToPrice}"/><br/>
+                            <select name="txtSearchCategory">
+                                <option value=""></option>
+                                <c:forEach items="${sessionScope.listCategory}" var="dto" varStatus="counter">
+                                    <option value="${dto.category}" <c:if test="${param.txtSearchCategory == dto.category}">selected=true</c:if>>${dto.category}</option>
+                                </c:forEach>
+                            </select>
+                            <input type="hidden" name="page" value="1"/>
                             <input type="submit" name="action" value="Search"/>
+                            <c:if test="${sessionScope.errorInput}">
+                                <script> alertErrorInput()</script>
+                            </c:if>
                         </div>
                     </div>
 
@@ -80,8 +93,8 @@
                                     <div class="thumbnail">
                                         <img src="${list.image}" alt="">
                                         <div class="caption">
-                                            <p class="productName">"${list.productName}</p>
-                                            <h4>${list.price}</h4>
+                                            <p class="productName">${list.productName}</p>
+                                            <h4>${list.price}đ</h4>
                                         </div>
                                     </div>
                                 </div>
@@ -90,31 +103,15 @@
                         <div class="container">
                             <ul class="pagination">
                                 <c:forEach begin="1" end="${sessionScope.pageCount}" varStatus="counter">
-                                    <c:if test="${counter.count == sessionScope.page}" var="isActive">
-                                        <li class="page-item active">
-                                            <a class="page-link" href="MainController?action=Search&page=${counter.count}&txtSearchByName=&txtFromPrice=&txtToPrice=&txtSearchCategory=">${counter.count}</a>
-                                        </li>
-                                    </c:if>
-                                    <c:if test="${!isActive}">
-                                        <li class="page-item">
-                                            <a class="page-link" href="MainController?action=Search&page=${counter.count}&txtSearchByName=&txtFromPrice=&txtToPrice=&txtSearchCategory=">${counter.count}</a>
-                                        </li>
-                                    </c:if>
-
+                                    <li class="page-item <c:if test="${counter.count == sessionScope.page}">active</c:if>">
+                                        <a class="page-link" href="MainController?action=Search&page=${counter.count}&txtSearchByName=${param.txtSearchByName}&txtFromPrice=${param.txtFromPrice}&txtToPrice=${param.txtToPrice}&txtSearchCategory=${param.txtSearchCategory}">${counter.count}</a>
+                                    </li>
                                 </c:forEach>
                             </ul>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
-            <!-- /.container -->
-            <div class="container">
-                <hr>
-            </div>
-            <!-- /.container -->
         </form>
     </body>
 </html>

@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import khamdd.connections.Connections;
+import khamdd.dtos.RegistrationDTO;
 
 /**
  *
@@ -31,21 +32,24 @@ public class RegistrationDAO {
         }
     }
     
-    public String login(String userID, String password) throws Exception {
-        String role = "Guest";
+    public RegistrationDTO login(String userID, String password) throws Exception {
+        RegistrationDTO dto = null;
         try{
-            String sql = "SELECT role FROM tbl_user WHERE status = 1 and userID = ? and password = ?";
+            String sql = "SELECT userID, role, fullname FROM tbl_user WHERE status = 1 and userID = ? and password = ?";
             conn = Connections.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setString(1, userID);
             ps.setString(2, password);
             rs = ps.executeQuery();
+            dto = new RegistrationDTO();
             if(rs.next()){
-                role = rs.getString("role");
+                dto.setRole(rs.getString("role"));
+                dto.setFullname(rs.getString("fullname"));
+                dto.setUserID(rs.getString("userID"));
             }
         } finally {
             closeConnection();
         }
-        return role;
+        return dto;
     }
 }

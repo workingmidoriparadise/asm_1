@@ -22,16 +22,15 @@
             <form class="form-signin" action="MainController" method="POST">
                 <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign in</h1>
                 <div class="social-login">
-                    <button class="btn google-btn social-btn" type="button"><span><i class="fab fa-google-plus-g"></i> Sign in with Google+</span> </button>
+                    <button class="btn google-btn social-btn" type="button"><span><i class="fab fa-google-plus-g"></i><a href="https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8084/Assignment1_DangDuongKham/login-google&response_type=code
+                                                                                                                                 &client_id=870975079006-eil60m44hq9jgll9sat3sptcsl49gmmt.apps.googleusercontent.com&approval_prompt=force"> Sign in with Google</a></span> </button>
                 </div>
                 <p style="text-align:center"> OR  </p>
-                <input type="UserID" id="inputEmail" name="txtUserID" class="form-control" placeholder="UserID" required="" autofocus="">
-                <input type="password" id="inputPassword" name="txtPassword" class="form-control" placeholder="Password" required="">
+                <input type="UserID" id="inputEmail" name="txtUserID" class="form-control" placeholder="UserID" autofocus="">
+                <input type="password" id="inputPassword" name="txtPassword" class="form-control" placeholder="Password" >
 
                 <button class="btn btn-success btn-block" type="submit" name="action" value="Login"><i class="fas fa-sign-in-alt"></i> Sign in</button>
                 <hr>
-                <!-- <p>Don't have an account!</p>  --> 
-                <button class="btn btn-primary btn-block" type="button" id="btn-signup"><i class="fas fa-user-plus"></i> Sign up New Account</button>
             </form>
             <br>
         </div>

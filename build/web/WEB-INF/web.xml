@@ -48,6 +48,10 @@
         <servlet-name>ConfirmCartController</servlet-name>
         <servlet-class>khamdd.controllers.ConfirmCartController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginGoogleServlet</servlet-name>
+        <servlet-class>khamdd.controllers.LoginGoogleServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>ConfirmCartController</servlet-name>
         <url-pattern>/ConfirmCartController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginGoogleServlet</servlet-name>
+        <url-pattern>/LoginGoogleServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -27,6 +27,12 @@ public class MainController extends HttpServlet {
     private static final String UPDATECART = "UpdateCartController";
     private static final String DELETECART  = "DeleteCartController";
     private static final String CONFIRMCART = "ConfirmCartController";
+    private static final String BACKHOME = "index.jsp";
+    private static final String GOLOGIN = "login.jsp";
+    private static final String CONTINUESHOPPING = "member.jsp";
+    private static final String VIEWCART = "view.jsp";
+    private static final String GOOGLELOGIN = "\"https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/AccessGoogle/login-google&response_type=code\n" +
+"    &client_id=870975079006-eil60m44hq9jgll9sat3sptcsl49gmmt.apps.googleusercontent.com&approval_prompt=force\"";
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,6 +60,16 @@ public class MainController extends HttpServlet {
                 url = DELETECART;
             } if(action.equals("ConfirmCart")){
                 url = CONFIRMCART;
+            } if(action.equals("BackHome")){
+                url = BACKHOME;
+            } if(action.equals("GoLogin")){
+                url = GOLOGIN;
+            } if(action.equals("ContinueShopping")){
+                url = CONTINUESHOPPING;
+            } if(action.equals("ViewCart")){
+                url = VIEWCART;
+            } if(action.equals("GoogleLogin")){
+                url = GOOGLELOGIN;
             }
             else {
                 request.setAttribute("ERROR", "Your action is invalid");

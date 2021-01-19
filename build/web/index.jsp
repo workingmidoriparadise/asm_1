@@ -37,16 +37,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.jsp">Hana Shop</a>
+                    <a class="navbar-brand" href="MainController?action=BackHome">Hana Shop</a>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="index.jsp">Home</a>
+                            <a href="MainController?action=BackHome">Home</a>
                         </li>
                         <li>
-                            <a href="login.jsp">Login</a>
+                            <a href="MainController?action=GoLogin">Login</a>
                         </li>
                     </ul>
                 </div>

@@ -16,7 +16,7 @@
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     </head>
     <body>
-        <c:set var="sum" value="0" scope="session"/>
+        <c:set var="sum" value="0" scope="request"/>
 
         <div class="container">
             <div class="row">
@@ -54,7 +54,7 @@
                                         <td class="col-sm-1 col-md-1 text-center"><strong>${myCart.price * myCart.quantity}đ</strong></td>
                                         <c:set var="sum" value="${sum + myCart.price * myCart.quantity}"/>
                                         <td class="col-sm-1 col-md-1">
-                                            <button type="submit" class="btn btn-danger" name="action" value="DeleteCart">
+                                            <button type="submit" class="btn btn-danger" name="action" value="DeleteCart" onclick="return confirm('Are you sure you want to delete?')">
                                                 <span class="glyphicon glyphicon-remove"></span> Remove
                                             </button>
                                         </td>
@@ -72,14 +72,15 @@
                                 <td>   </td>
                                 <td><h3>Total</h3></td>
                                 <td class="text-right"><h3><strong><c:out value="${sum}đ"/></strong></h3></td>
+                                
                             </tr>
                             <tr>
                                 <td>   </td>
                                 <td>   </td>
-                                <td>   </td>
+                                <td> ${requestScope.success}  </td>
                                 <td>
                                     <button type="button" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-shopping-cart"></span> <a href="MainController?action=ConfirmCart">Confirm</a>
+                                        <span class="glyphicon glyphicon-shopping-cart"></span> <a href="MainController?action=ConfirmCart&sum=${sum}">Confirm</a>
                                     </button>
                                 </td>
                             </tr>
@@ -89,7 +90,7 @@
                                 <td>   </td>
                                 <td>
                                     <button type="button" class="btn btn-default">
-                                        <span class="glyphicon glyphicon-shopping-cart"></span> <a href="member.jsp">Continue Shopping</a>
+                                        <span class="glyphicon glyphicon-shopping-cart"></span> <a href="MainController?action=ContinueShopping">Continue Shopping</a>
                                     </button>
                                 </td>
                             </tr>

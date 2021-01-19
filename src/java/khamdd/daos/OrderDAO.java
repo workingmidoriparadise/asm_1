@@ -44,7 +44,8 @@ public class OrderDAO {
             ps.setTimestamp(1, dto.getOrderDate());
             ps.setFloat(2, dto.getTotal());
             ps.setString(3, dto.getUserID());
-            rs = ps.executeQuery();
+            ps.execute();
+            rs = ps.getGeneratedKeys();
             if(rs.next()){
                 orderID = rs.getInt(1);
             }

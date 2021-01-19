@@ -44,7 +44,7 @@ public class ConfirmCartController extends HttpServlet {
             int quantity = 0;
             Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
             orderDTO.setOrderDate(date);
-            orderDTO.setTotal((Float) session.getAttribute("sum"));
+            orderDTO.setTotal(Float.parseFloat(request.getParameter("sum")));
             orderDTO.setUserID((String) session.getAttribute("userID"));
             int orderID = dao.insertOrder(orderDTO);
             boolean check = false;
@@ -62,9 +62,9 @@ public class ConfirmCartController extends HttpServlet {
 
             if (check == true) {
                 url = SUCCESS;
-                session.setAttribute("success", "Success");
+                request.setAttribute("success", "Success");
             } else {
-                session.setAttribute("error", "Order failed");
+                request.setAttribute("error", "Order failed");
             }
         } catch (Exception e) {
             log("Error at ConfirmCartController: " + e.getMessage());

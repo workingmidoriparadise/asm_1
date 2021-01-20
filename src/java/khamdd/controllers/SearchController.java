@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import khamdd.daos.ProductDAO;
 import khamdd.dtos.ProductDTO;
 import khamdd.dtos.SearchDTO;
-import khamdd.dtos.SearchErrorObject;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -23,10 +23,11 @@ import khamdd.dtos.SearchErrorObject;
  */
 public class SearchController extends HttpServlet {
 
-    private static final String MEMBER = "member.jsp";
-    private static final String GUEST = "index.jsp";
-    private static final String ADMIN = "admin.jsp";
-
+    private static final String MEMBER = "portlets/member.jsp";
+    private static final String GUEST = "portlets/index.jsp";
+    private static final String ADMIN = "portlets/admin.jsp";
+    private final static Logger LOG = Logger.getLogger(SearchController.class);
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -48,12 +49,18 @@ public class SearchController extends HttpServlet {
             String fromPrice = request.getParameter("txtFromPrice");
             String toPrice = request.getParameter("txtToPrice");
             String searchByCategory = request.getParameter("txtSearchCategory");
-            
+
             if (!fromPrice.equals("")) {
                 try {
                     Float.parseFloat(fromPrice);
                 } catch (Exception e) {
-                    session.setAttribute("errorInput", true);
+                    if (role.equals("admin")) {
+                        session.setAttribute("adminErrorInput", true);
+                    } else if (role.equals("member")) {
+                        session.setAttribute("memberErrorInput", true);
+                    } else {
+                        session.setAttribute("errorInput", true);
+                    }
                     request.getRequestDispatcher(url).forward(request, response);
                 }
                 min = Float.parseFloat(fromPrice);
@@ -64,7 +71,13 @@ public class SearchController extends HttpServlet {
                 try {
                     Float.parseFloat(toPrice);
                 } catch (Exception e) {
-                    session.setAttribute("errorInput", true);
+                    if (role.equals("admin")) {
+                        session.setAttribute("adminErrorInput", true);
+                    } else if (role.equals("member")) {
+                        session.setAttribute("memberErrorInput", true);
+                    } else {
+                        session.setAttribute("errorInput", true);
+                    }
                     request.getRequestDispatcher(url).forward(request, response);
                 }
                 max = Float.parseFloat(toPrice);
@@ -82,7 +95,7 @@ public class SearchController extends HttpServlet {
             session.setAttribute("page", request.getParameter("page"));
             if (index != 1) {
                 index = (index - 1) * 6;
-            } else{
+            } else {
                 index = 0;
             }
             ProductDAO dao = new ProductDAO();
@@ -97,7 +110,7 @@ public class SearchController extends HttpServlet {
             }
             session.setAttribute("pageCount", pageCount);
         } catch (Exception e) {
-            log("Error at SearchController: " + e.getMessage());
+            LOG.error("Error at SearchController: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

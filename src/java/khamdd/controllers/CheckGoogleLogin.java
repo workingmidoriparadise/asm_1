@@ -6,57 +6,56 @@
 package khamdd.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import khamdd.daos.ProductDAO;
-import khamdd.dtos.ProductDTO;
-import khamdd.dtos.SearchDTO;
+import khamdd.daos.RegistrationDAO;
 import org.apache.log4j.Logger;
 
 /**
  *
  * @author KHAM
  */
-public class FirstUpdateController extends HttpServlet {
-
-    private final static Logger LOG = Logger.getLogger(FirstUpdateController.class);
+public class CheckGoogleLogin extends HttpServlet {
+    private final static Logger LOG = Logger.getLogger(CheckGoogleLogin.class);
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-
         try {
-            String updatePage = request.getParameter("updatePage");
-            if (updatePage == null) {
-                updatePage = "1";
-            }
             HttpSession session = request.getSession();
-            int page = Integer.parseInt(updatePage);
-            if (page != 1) {
-                page = (page - 1) * 6;
-            }
-            ArrayList<ProductDTO> listUpdate = new ArrayList<>();
-            ProductDAO dao = new ProductDAO();
-            SearchDTO dto = new SearchDTO("", "", Float.MIN_VALUE, Float.MAX_VALUE);
-            int pageCount = dao.count(dto);
-            if (pageCount % 6 != 0) {
-                pageCount = pageCount / 6 + 1;
+            response.setContentType("text/html;charset=UTF-8");
+            String id = (String) request.getAttribute("id");
+            String email = (String) request.getAttribute("email");
+            
+            RegistrationDAO dao = new RegistrationDAO();
+            boolean check = dao.checkExistUserID(id);
+            if(check){
+                session.setAttribute("role", "member");
+                session.setAttribute("fullname", email);
+                session.setAttribute("userID", id);
             } else {
-                pageCount = pageCount / 6;
+                dao.createGGAccount(id, "member", email, email);
+                session.setAttribute("role", "member");
+                session.setAttribute("fullname", email);
+                session.setAttribute("userID", id);
             }
-            session.setAttribute("pageCount", pageCount);
-            session.setAttribute("updatePage", updatePage);
-            listUpdate = dao.searchForUpdate(dto, page);
-            session.setAttribute("listUpdate", listUpdate);
         } catch (Exception e) {
-            LOG.error("Error at FirstUpdateController: " + e.getMessage());
+            LOG.error("Error at CheckGoogleLogin: " +e.getMessage());
         } finally {
-            request.getRequestDispatcher("portlets/update.jsp").forward(request, response);
+            request.getRequestDispatcher("portlets/member.jsp").forward(request, response);
         }
-
+        //VanVTT10@fe.edu.vn
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -97,4 +96,5 @@ public class FirstUpdateController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

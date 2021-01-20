@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import khamdd.dtos.CartObj;
 import khamdd.dtos.MyOrderDTO;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -20,6 +21,8 @@ import khamdd.dtos.MyOrderDTO;
  */
 public class AddToCartController extends HttpServlet {
 
+    private final static Logger LOG = Logger.getLogger(AddToCartController.class);
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -39,9 +42,9 @@ public class AddToCartController extends HttpServlet {
             cart.addCart(dto);
             session.setAttribute("cart", cart);
         } catch (Exception e) {
-            log("Error at AddToCartController: " + e.getMessage());
+            LOG.error("Error at AddToCartController: " + e.getMessage());
         } finally {
-            request.getRequestDispatcher("member.jsp").forward(request, response);
+            request.getRequestDispatcher("portlets/member.jsp").forward(request, response);
         }
     }
 

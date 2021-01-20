@@ -13,8 +13,8 @@ import java.io.Serializable;
  */
 public class SearchDTO implements Serializable {
 
-    String name, category;
-    float fromPrice, toPrice;
+    private String name, category;
+    private float fromPrice, toPrice;
 
     public SearchDTO() {
     }

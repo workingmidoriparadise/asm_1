@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import khamdd.daos.ProductDAO;
 import khamdd.dtos.ProductDTO;
 import khamdd.dtos.SearchDTO;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -22,6 +23,7 @@ import khamdd.dtos.SearchDTO;
  */
 public class FirstController extends HttpServlet {
 
+    private final static Logger LOG = Logger.getLogger(FirstController.class);
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
@@ -44,9 +46,9 @@ public class FirstController extends HttpServlet {
             }
             session.setAttribute("pageCount", page);
         } catch (Exception e) {
-            log("Error at FirstController: " + e.getMessage());
+            LOG.error("Error at FirstController: " + e.getMessage());
         } finally {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("portlets/index.jsp").forward(request, response);
         }
     }
 

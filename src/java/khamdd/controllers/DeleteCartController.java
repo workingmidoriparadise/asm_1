@@ -6,13 +6,13 @@
 package khamdd.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import khamdd.dtos.CartObj;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -20,6 +20,8 @@ import khamdd.dtos.CartObj;
  */
 public class DeleteCartController extends HttpServlet {
 
+    private final static Logger LOG = Logger.getLogger(DeleteCartController.class);
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -30,9 +32,9 @@ public class DeleteCartController extends HttpServlet {
             CartObj cart = (CartObj) session.getAttribute("cart");
             cart.removeCart(productID);
         } catch (Exception e) {
-            log("Error at DeleteCartController: " +e.getMessage());
+            LOG.error("Error at DeleteCartController: " +e.getMessage());
         }finally{
-            response.sendRedirect("view.jsp");
+            response.sendRedirect("portlets/view.jsp");
         }
     }
 

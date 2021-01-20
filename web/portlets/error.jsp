@@ -18,10 +18,5 @@
         ${requestScope.ERROR}
         </font>
         <br/>
-        <!--
-        <c:if test="${sessionScope.error ==  'Delete failed'}">
-            <a href ="update.jsp">Back to update page</a>
-        </c:if>
-        -->
         <a href ="MainController?action=BackHome">Back to login page</a>
 </html>

@@ -1,6 +1,6 @@
 <%-- 
-    Document   : user
-    Created on : Jan 7, 2021, 9:10:22 AM
+    Document   : admin
+    Created on : Jan 7, 2021, 9:10:04 AM
     Author     : KHAM
 --%>
 
@@ -23,7 +23,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
         <link href="css/css.css" rel="stylesheet">
-        <script src="js/myJs.js"></script>
 
     </head>
     <body>
@@ -43,16 +42,19 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li>
+                            <a href="#">Welcome, ${sessionScope.fullname}</a>
+                        </li>
+                        <li>
                             <a href="MainController?action=BackHome">Home</a>
                         </li>
                         <li>
                             <a href="MainController?action=Logout">Logout</a>
                         </li>
                         <li>
-                            <a href="MainController?action=ViewCart">View Cart</a>
+                            <a href="MainController?action=GoCreateProduct">Create Product</a>
                         </li>
                         <li>
-                            <a href="#">Welcome, ${sessionScope.fullname}</a>
+                            <a href="MainController?action=FirstUpdate">Update Product</a>
                         </li>
                     </ul>
                 </div>
@@ -62,11 +64,12 @@
         </nav>
 
         <!-- Page Content -->
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <form action="MainController" method="POST">
+        <form action="MainController" method="POST">
+            <div class="container">
 
+                <div class="row">
+
+                    <div class="col-md-3">
                         <p class="lead">Search</p>
                         <div class="list-group">
                             <input type="text" name="txtSearchByName" placeholder="Product's name" value="${param.txtSearchByName}"/><br/>
@@ -75,42 +78,31 @@
                             <select name="txtSearchCategory">
                                 <option value=""></option>
                                 <c:forEach items="${sessionScope.listCategory}" var="dto" varStatus="counter">
-                                    <option value="${dto.category}" <c:if test="${param.txtSearchCategory == dto.category}">selected="true"</c:if>>${dto.category}</option>
+                                    <option value="${dto.category}" <c:if test="${param.txtSearchCategory == dto.category}">selected=true</c:if>>${dto.category}</option>
                                 </c:forEach>
                             </select>
                             <input type="hidden" name="page" value="1"/>
                             <input type="submit" name="action" value="Search"/>
-                            <c:if test="${sessionScope.errorInput}">
+                            <c:if test="${sessionScope.adminErrorInput}">
                                 <script> alertErrorInput()</script>
                             </c:if>
                         </div>
-                    </form>
-                </div>
+                    </div>
 
-                <div class="col-md-9">
-                    <div class="row">
-                        <c:forEach items="${sessionScope.listSearched}" var="list" varStatus="counter">
-                            <form action="MainController" method="POST">
+                    <div class="col-md-9">
+                        <div class="row">
+                            <c:forEach items="${sessionScope.listSearched}" var="list" varStatus="counter">
                                 <div class="col-sm-4 col-lg-4 col-md-4">
                                     <div class="thumbnail">
-                                        <img src="${list.image}" alt="Product Image"/>
+                                        <img src="${list.image}" alt="">
                                         <div class="caption">
                                             <p class="productName">${list.productName}</p>
                                             <h4>${list.price}đ</h4>
-                                            <div>
-                                                <input type="hidden" name="txtAddProductID" value="${list.productID}"/>
-                                                <input type="hidden" name="txtAddProductName" value="${list.productName}"/>
-                                                <input type="hidden" name="txtAddImage" value="${list.image}"/>
-                                                <input type="hidden" name="txtAddPrice" value="${list.price}"/>
-                                                <input type="submit" name="action" value="Add to cart"/>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </c:forEach>
-                    </div>
-                    <form action="MainController" method="POST">
+                            </c:forEach>
+                        </div>
                         <div class="container">
                             <ul class="pagination">
                                 <c:forEach begin="1" end="${sessionScope.pageCount}" varStatus="counter">
@@ -120,10 +112,9 @@
                                 </c:forEach>
                             </ul>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
-        <!-- /.container -->
-    </form>
+        </form>
+    </body>
 </html>

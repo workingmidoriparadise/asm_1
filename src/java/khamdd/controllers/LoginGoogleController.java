@@ -6,56 +6,40 @@
 package khamdd.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import khamdd.daos.ProductDAO;
-import khamdd.dtos.ProductDTO;
-import khamdd.dtos.SearchDTO;
-import org.apache.log4j.Logger;
+import khamdd.utils.GooglePojo;
+import khamdd.utils.GoogleUtils;
 
 /**
  *
  * @author KHAM
  */
-public class FirstUpdateController extends HttpServlet {
+@WebServlet("/login-google")
+public class LoginGoogleController extends HttpServlet {
 
-    private final static Logger LOG = Logger.getLogger(FirstUpdateController.class);
+    private static final long serialVersionUID = 1L;
+
+    public LoginGoogleController() {
+        super();
+    }
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        try {
-            String updatePage = request.getParameter("updatePage");
-            if (updatePage == null) {
-                updatePage = "1";
-            }
-            HttpSession session = request.getSession();
-            int page = Integer.parseInt(updatePage);
-            if (page != 1) {
-                page = (page - 1) * 6;
-            }
-            ArrayList<ProductDTO> listUpdate = new ArrayList<>();
-            ProductDAO dao = new ProductDAO();
-            SearchDTO dto = new SearchDTO("", "", Float.MIN_VALUE, Float.MAX_VALUE);
-            int pageCount = dao.count(dto);
-            if (pageCount % 6 != 0) {
-                pageCount = pageCount / 6 + 1;
-            } else {
-                pageCount = pageCount / 6;
-            }
-            session.setAttribute("pageCount", pageCount);
-            session.setAttribute("updatePage", updatePage);
-            listUpdate = dao.searchForUpdate(dto, page);
-            session.setAttribute("listUpdate", listUpdate);
-        } catch (Exception e) {
-            LOG.error("Error at FirstUpdateController: " + e.getMessage());
-        } finally {
-            request.getRequestDispatcher("portlets/update.jsp").forward(request, response);
-        }
 
     }
 
@@ -71,7 +55,21 @@ public class FirstUpdateController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String code = request.getParameter("code");
+        if (code == null || code.isEmpty()) {
+            RequestDispatcher dis = request.getRequestDispatcher("login.jsp");
+            dis.forward(request, response);
+        } else {
+            String accessToken = GoogleUtils.getToken(code);
+            GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
+            request.setAttribute("id", googlePojo.getId());
+            request.setAttribute("googleName", googlePojo.getName());
+            request.setAttribute("email", googlePojo.getEmail());
+            
+            RequestDispatcher dis = request.getRequestDispatcher("CheckGoogleLogin");
+            dis.forward(request, response);
+        }
+
     }
 
     /**
@@ -85,7 +83,7 @@ public class FirstUpdateController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /**
@@ -97,4 +95,5 @@ public class FirstUpdateController extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }

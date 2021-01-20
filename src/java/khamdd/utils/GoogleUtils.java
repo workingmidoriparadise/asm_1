@@ -3,19 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package khamdd.dtos;
+package khamdd.utils;
+
+/**
+ *
+ * @author KHAM
+ */
 import java.io.IOException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-/**
- *
- * @author KHAM
- */
 public class GoogleUtils {
-    public static String getToken(final String code) throws ClientProtocolException, IOException {
+  public static String getToken(final String code) throws ClientProtocolException, IOException {
     String response = Request.Post(Constants.GOOGLE_LINK_GET_TOKEN)
         .bodyForm(Form.form().add("client_id", Constants.GOOGLE_CLIENT_ID)
             .add("client_secret", Constants.GOOGLE_CLIENT_SECRET)
@@ -33,5 +34,4 @@ public class GoogleUtils {
     System.out.println(googlePojo);
     return googlePojo;
   }
-
 }

@@ -10,29 +10,33 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author KHAM
  */
 public class MainController extends HttpServlet {
-    private static final String ERROR = "error.jsp";
+    private static final String ERROR = "portlets/error.jsp";
     private static final String LOGIN = "LoginController";
     private static final String SEARCH = "SearchController";
-    private static final String FIRSTUPDATE = "FirstUpdateController";
+    private static final String FIRST_UPDATE = "FirstUpdateController";
     private static final String DELETE = "DeleteController";
     private static final String UPDATE = "UpdateController";
-    private static final String ADDTOCART = "AddToCartController";
+    private static final String ADD_TO_CART = "AddToCartController";
     private static final String LOGOUT = "LogoutController";
-    private static final String UPDATECART = "UpdateCartController";
-    private static final String DELETECART  = "DeleteCartController";
-    private static final String CONFIRMCART = "ConfirmCartController";
-    private static final String BACKHOME = "index.jsp";
-    private static final String GOLOGIN = "login.jsp";
-    private static final String CONTINUESHOPPING = "member.jsp";
-    private static final String VIEWCART = "view.jsp";
-    private static final String GOOGLELOGIN = "\"https://accounts.google.com/o/oauth2/auth?scope=email&redirect_uri=http://localhost:8080/AccessGoogle/login-google&response_type=code\n" +
-"    &client_id=870975079006-eil60m44hq9jgll9sat3sptcsl49gmmt.apps.googleusercontent.com&approval_prompt=force\"";
+    private static final String UPDATE_CART = "UpdateCartController";
+    private static final String DELETE_CART  = "DeleteCartController";
+    private static final String CONFIRM_CART = "ConfirmCartController";
+    private static final String BACK_HOME = "portlets/index.jsp";
+    private static final String GO_LOGIN = "portlets/login.jsp";
+    private static final String CONTINUE_SHOPPING = "portlets/member.jsp";
+    private static final String VIEW_CART = "portlets/view.jsp";
+    private static final String SHOPPING_HISTORY = "ShoppingHistoryController";
+    private static final String GO_CREATE_PRODUCT = "portlets/createProduct.jsp";
+    private static final String CREATE_PRODUCT = "CreateProductController";
+    private static final String GOOGLE_LOGIN = "CheckGoogleLogin";
+    private final static Logger LOG = Logger.getLogger(MainController.class);
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -45,37 +49,43 @@ public class MainController extends HttpServlet {
             } if(action.equals("Search")){
                 url = SEARCH;
             } if(action.equals("FirstUpdate")){
-                url = FIRSTUPDATE;
+                url = FIRST_UPDATE;
             } if(action.equals("Delete")){
                 url = DELETE;
             } if(action.equals("Update")){
                 url = UPDATE;
             } if(action.equals("Add to cart")){
-                url = ADDTOCART;
+                url = ADD_TO_CART;
             } if(action.equals("Logout")){
                 url = LOGOUT;
             } if(action.equals("UpdateCart")){
-                url = UPDATECART;
+                url = UPDATE_CART;
             } if(action.equals("DeleteCart")){
-                url = DELETECART;
+                url = DELETE_CART;
             } if(action.equals("ConfirmCart")){
-                url = CONFIRMCART;
+                url = CONFIRM_CART;
             } if(action.equals("BackHome")){
-                url = BACKHOME;
+                url = BACK_HOME;
             } if(action.equals("GoLogin")){
-                url = GOLOGIN;
+                url = GO_LOGIN;
             } if(action.equals("ContinueShopping")){
-                url = CONTINUESHOPPING;
+                url = CONTINUE_SHOPPING;
             } if(action.equals("ViewCart")){
-                url = VIEWCART;
+                url = VIEW_CART;
+            } if(action.equals("ViewOrderHistory")){
+                url = SHOPPING_HISTORY;
+            } if(action.equals("GoCreateProduct")){
+                url = GO_CREATE_PRODUCT;
+            } if(action.equals("CreateProduct")){
+                url = CREATE_PRODUCT;
             } if(action.equals("GoogleLogin")){
-                url = GOOGLELOGIN;
+                url = GOOGLE_LOGIN;
             }
             else {
                 request.setAttribute("ERROR", "Your action is invalid");
             }
         } catch (Exception e) {
-            log("Error at MainController: " + e.getMessage());
+            LOG.error("Error at MainController: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

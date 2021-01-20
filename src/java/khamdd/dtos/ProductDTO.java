@@ -15,10 +15,10 @@ import java.util.Date;
  */
 public class ProductDTO implements Serializable{
     private String productID, productName, image, description, category;
-    Date createDate;
-    float price;
-    int quantity;
-    int status;
+    private Date createDate;
+    private float price;
+    private int quantity;
+    private int status;
     
     public ProductDTO() {
     }
@@ -47,6 +47,16 @@ public class ProductDTO implements Serializable{
         this.price = price;
         this.quantity = quantity;
         this.status = status;
+    }
+
+    public ProductDTO(String productID, String productName, String image, String description, String category, float price, int quantity) {
+        this.productID = productID;
+        this.productName = productName;
+        this.image = image;
+        this.description = description;
+        this.category = category;
+        this.price = price;
+        this.quantity = quantity;
     }
     
     public String getProductID() {

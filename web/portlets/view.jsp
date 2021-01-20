@@ -48,6 +48,7 @@
                                         </td>
                                         <td class="col-sm-1 col-md-1" style="text-align: center">
                                             <input type="text" value="${myCart.quantity}" name="txtQuantity">
+
                                             <input type="hidden" name="txtProductID" value="${myCart.productID}"/>
                                         </td>
                                         <td class="col-sm-1 col-md-1 text-center"><strong>${myCart.price}đ</strong></td>
@@ -67,12 +68,14 @@
                                 </form>
                             </c:forEach>
                             <tr>
-                                <td>   </td>
+                                <td> <font color="red">
+                                    ${requestScope.INVALIDQUANTITY}
+                                    </font>  </td>
                                 <td>   </td>
                                 <td>   </td>
                                 <td><h3>Total</h3></td>
                                 <td class="text-right"><h3><strong><c:out value="${sum}đ"/></strong></h3></td>
-                                
+
                             </tr>
                             <tr>
                                 <td>   </td>
@@ -99,6 +102,6 @@
                     </form>
                 </div>
             </div>
-        </div>
+            <%--<c:set scope="session" var="totalPrice" value="${sum}"/>--%>
     </body>
 </html>

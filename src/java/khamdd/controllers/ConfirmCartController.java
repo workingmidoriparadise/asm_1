@@ -18,6 +18,7 @@ import khamdd.dtos.CartObj;
 import khamdd.dtos.MyOrderDTO;
 import khamdd.dtos.OrderDTO;
 import khamdd.dtos.OrderDetailsDTO;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -25,9 +26,10 @@ import khamdd.dtos.OrderDetailsDTO;
  */
 public class ConfirmCartController extends HttpServlet {
 
-    private static final String SUCCESS = "view.jsp";
-    private static final String FAILED = "error.jsp";
-
+    private static final String SUCCESS = "portlets/view.jsp";
+    private static final String FAILED = "portlets/error.jsp";
+    private final static Logger LOG = Logger.getLogger(ConfirmCartController.class);
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -67,7 +69,7 @@ public class ConfirmCartController extends HttpServlet {
                 request.setAttribute("error", "Order failed");
             }
         } catch (Exception e) {
-            log("Error at ConfirmCartController: " + e.getMessage());
+            LOG.error("Error at ConfirmCartController: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

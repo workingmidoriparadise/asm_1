@@ -6,39 +6,44 @@
 package khamdd.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Timestamp;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import khamdd.daos.ProductDAO;
+import khamdd.dtos.UpdateProductHistoryDTO;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author KHAM
  */
 public class DeleteController extends HttpServlet {
-    private static final String SUCCESS = "FirstUpdateController";
-    private static final String FAILED = "error.jsp";
+
+    private final static Logger LOG = Logger.getLogger(DeleteController.class);
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = FAILED;
         try {
-            HttpSession session = request.getSession();
-            String productID = request.getParameter("txtProductID");
+            String[] listProductID = request.getParameterValues("txtDeleteCB");
             ProductDAO dao = new ProductDAO();
-            if(dao.deleteProduct(productID)){
-                url = SUCCESS;
-            } else {
-                session.setAttribute("error", "Delete failed");
+            UpdateProductHistoryDTO dto = null;
+            dao.deleteProduct(listProductID);
+
+            for (String s : listProductID) {
+                dto = new UpdateProductHistoryDTO();
+                dto.setProductID(s);
+                dto.setAction("Delete Product ID " + s);
+                Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());
+                dto.setUpdateDate(date);
+                dao.recordUpdateProductHistory(dto);
             }
         } catch (Exception e) {
-            log("Error at DeleteController: " + e.getMessage());
+            LOG.error("Error at DeleteController: " + e.getMessage());
         } finally {
-            request.getRequestDispatcher(url).forward(request, response);
+            request.getRequestDispatcher("FirstUpdateController").forward(request, response);
         }
     }
 

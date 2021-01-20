@@ -12,15 +12,16 @@ import java.sql.Statement;
 import khamdd.connections.Connections;
 import khamdd.dtos.OrderDTO;
 import khamdd.dtos.OrderDetailsDTO;
+import khamdd.dtos.ShoppingHistoryDTO;
 
 /**
  *
  * @author KHAM
  */
 public class OrderDAO {
-    Connection conn = null;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
+    private Connection conn = null;
+    private PreparedStatement ps = null;
+    private ResultSet rs = null;
 
     private void closeConnection() throws Exception {
         if (rs != null) {
@@ -74,4 +75,21 @@ public class OrderDAO {
         return check;
     }
     
+    
+//    public ArraShoppingHistoryDTO getOrderByUserID(String userID) throws Exception{
+//        ShoppingHistoryDTO dto = null;
+//        try {
+//            String sql = "Select orderID, orderDate, orderTotalPrice from tbl_Order where userID like ?";
+//            conn = Connections.getConnection();
+//            ps = conn.prepareStatement(sql);
+//            ps.setString(1, userID);
+//            rs = ps.executeQuery();
+//            while(rs.next()){
+//                
+//            }
+//        } finally{
+//            closeConnection();
+//        }
+//        return dto;
+//    }
 }

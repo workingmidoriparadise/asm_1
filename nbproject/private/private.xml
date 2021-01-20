@@ -3,14 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/dtos/GoogleUtils.java</file>
-            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/controllers/LoginGoogleServlet.java</file>
-            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/dtos/Constants.java</file>
             <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/web/login.jsp</file>
+            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/daos/ProductDAO.java</file>
+            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/controllers/DeleteController.java</file>
+            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/web/update.jsp</file>
             <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/controllers/MainController.java</file>
-            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/dtos/GooglePojo.java</file>
-            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/web/googleLogin.jsp</file>
-            <file>file:/D:/FPT/LAB231_VanVTT/Assignment/Assignment1_DangDuongKham/src/java/khamdd/daos/RegistrationDAO.java</file>
         </group>
     </open-files>
 </project-private>

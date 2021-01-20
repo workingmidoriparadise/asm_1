@@ -14,16 +14,19 @@ import javax.servlet.http.HttpSession;
 import khamdd.daos.RegistrationDAO;
 import khamdd.dtos.RegistrationDTO;
 import khamdd.dtos.RegistrationErrorObject;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author KHAM
  */
 public class LoginController extends HttpServlet {
-    private static final String MEMBER = "member.jsp";
-    private static final String ADMIN = "admin.jsp";
-    private static final String ERROR = "error.jsp";
-    private static final String INVALID = "index.jsp";
+
+    private static final String MEMBER = "portlets/member.jsp";
+    private static final String ADMIN = "portlets/admin.jsp";
+    private static final String ERROR = "portlets/error.jsp";
+    private static final String INVALID = "portlets/login.jsp";
+    private final static Logger LOG = Logger.getLogger(LoginController.class);
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -34,40 +37,41 @@ public class LoginController extends HttpServlet {
             String password = request.getParameter("txtPassword");
             RegistrationErrorObject errorObj = new RegistrationErrorObject();
             boolean check = true;
-            if(userID.length() == 0) {
+            if (userID.length() == 0) {
                 check = false;
                 errorObj.setUserIDError("UserID can't be blank");
             }
-            if(password.length() == 0) {
+            if (password.length() == 0) {
                 check = false;
                 errorObj.setPasswordError("Password can't be blank");
             }
-            
-            if(check == true) {
+
+            if (check == true) {
                 HttpSession session = request.getSession();
                 RegistrationDAO dao = new RegistrationDAO();
                 RegistrationDTO dto = dao.login(userID, password);
+                System.out.println(dto);
                 String role = dto.getRole();
                 String fullname = dto.getFullname();
                 session.setAttribute("role", role);
                 session.setAttribute("fullname", fullname);
                 session.setAttribute("userID", dto.getUserID());
-                if(role.equals("member")) {
+                if (role == null) {
+                    url = INVALID;
+                    request.setAttribute("LOGINERROR", "UserID or Password are incorrect");
+                } else if (role.equals("member")) {
                     url = MEMBER;
-                }
-                else if(role.equals("admin")) {
+                } else if (role.equals("admin")) {
                     url = ADMIN;
                 }
-                else {
-                    request.setAttribute("ERROR", "UserID or Password is invalid");
-                }
+
             } else {
                 request.setAttribute("INVALID", errorObj);
                 url = INVALID;
             }
-            
+
         } catch (Exception e) {
-            log("Error at LoginController: " + e.getMessage());
+            LOG.error("Error at LoginController: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

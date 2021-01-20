@@ -16,9 +16,9 @@ import khamdd.dtos.RegistrationDTO;
  * @author KHAM
  */
 public class RegistrationDAO {
-    ResultSet rs = null;
-    PreparedStatement ps = null;
-    Connection conn = null;
+    private ResultSet rs = null;
+    private PreparedStatement ps = null;
+    private Connection conn = null;
     
     private void closeConnection() throws Exception {
         if(rs != null) {
@@ -51,5 +51,40 @@ public class RegistrationDAO {
             closeConnection();
         }
         return dto;
+    }
+    
+    
+    public boolean checkExistUserID(String id) throws Exception{
+        boolean check = false;
+        try{
+            String sql = "Select userName from tbl_user where userID like ?";
+            conn = Connections.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, id);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } finally{
+            closeConnection();
+        }
+        return check;
+    }
+    
+    public boolean createGGAccount(String userID, String role, String email, String userName) throws Exception{
+        boolean check = false;
+        try {
+            String sql = "Insert into tbl_user(userID, userName, role, email) values(?,?,?,?)";
+            conn = Connections.getConnection();
+            ps = conn.prepareStatement(sql);
+            ps.setString(1, userID);
+            ps.setString(2, userName);
+            ps.setString(3, "member");
+            ps.setString(4, email);
+            check = ps.executeUpdate() == 1;
+        } finally{
+            closeConnection();
+        }
+        return check;
     }
 }

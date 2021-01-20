@@ -52,6 +52,22 @@
         <servlet-name>LoginGoogleServlet</servlet-name>
         <servlet-class>khamdd.controllers.LoginGoogleServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CheckGoogleLogin</servlet-name>
+        <servlet-class>khamdd.controllers.CheckGoogleLogin</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShoppingHistoryController</servlet-name>
+        <servlet-class>khamdd.controllers.ShoppingHistoryController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateProductController</servlet-name>
+        <servlet-class>khamdd.controllers.CreateProductController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginGoogleController</servlet-name>
+        <servlet-class>khamdd.controllers.LoginGoogleController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -104,6 +120,22 @@
         <servlet-name>LoginGoogleServlet</servlet-name>
         <url-pattern>/LoginGoogleServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckGoogleLogin</servlet-name>
+        <url-pattern>/CheckGoogleLogin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShoppingHistoryController</servlet-name>
+        <url-pattern>/ShoppingHistoryController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateProductController</servlet-name>
+        <url-pattern>/CreateProductController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginGoogleController</servlet-name>
+        <url-pattern>/LoginGoogleController</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -112,4 +144,27 @@
     <welcome-file-list>
         <welcome-file>FirstController</welcome-file>
     </welcome-file-list>
+    <security-constraint>
+        <display-name>Default Portlet Security Constraints</display-name>
+        <web-resource-collection>
+            <web-resource-name>Portlet Directory</web-resource-name>
+            <url-pattern>/portlets/*</url-pattern>
+            <!--<url-pattern>/portlets/*</url-pattern>-->
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Admin</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <context-param>
+        <param-name>log4j-config-location</param-name>
+        <param-value>WEB-INF/log4j.properties</param-value>
+    </context-param>
+    <listener>
+        <listener-class>khamdd.controllers.ContextListener</listener-class>
+    </listener>
 </web-app>

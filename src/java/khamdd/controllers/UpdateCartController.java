@@ -6,36 +6,49 @@
 package khamdd.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import khamdd.dtos.CartObj;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author KHAM
  */
 public class UpdateCartController extends HttpServlet {
-
+    private final static Logger LOG = Logger.getLogger(UpdateCartController.class);
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        boolean check = true;
         try {
             HttpSession session = request.getSession();
             CartObj shoppingCart = (CartObj) session.getAttribute("cart");
             String quantity = request.getParameter("txtQuantity");
-            String productID = request.getParameter("txtProductID");
-            shoppingCart.updateCart(productID, Integer.parseInt(quantity));
-            session.setAttribute("cart", shoppingCart);
-            System.out.println(productID);
+            try {
+                if (Integer.parseInt(quantity) < 0) {
+                    check = false;
+                    request.setAttribute("INVALIDQUANTITY", "Quantity must be >= 0");
+                }
+            } catch (Exception e) {
+                request.setAttribute("INVALIDQUANTITY", "Your quantity is invalid");
+                check = false;
+            }
+
+            if (check == true) {
+                String productID = request.getParameter("txtProductID");
+                shoppingCart.updateCart(productID, Integer.parseInt(quantity));
+                session.setAttribute("cart", shoppingCart);
+            }
         } catch (Exception e) {
-            log("Error at UpdateCartController: " + e.getMessage());
+            LOG.error("Error at UpdateCartController: " + e.getMessage());
         } finally {
-            response.sendRedirect("view.jsp");
+            request.getRequestDispatcher("portlets/view.jsp").forward(request, response);
         }
     }
 

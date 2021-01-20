@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author KHAM
  */
 public class SearchErrorObject implements Serializable{
-    String errorFromPrice, errorToPrice;
+    private String errorFromPrice, errorToPrice;
 
     public SearchErrorObject() {
     }

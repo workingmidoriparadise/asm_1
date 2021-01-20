@@ -6,32 +6,30 @@
 package khamdd.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import khamdd.dtos.GooglePojo;
-import khamdd.dtos.GoogleUtils;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author KHAM
  */
-@WebServlet("/login-google")
-public class LoginGoogleServlet extends HttpServlet {
-
-    private static final long serialVersionUID = 1L;
-
-    public LoginGoogleServlet() {
-        super();
-    }
-
+public class ShoppingHistoryController extends HttpServlet {
+    private final static Logger LOG = Logger.getLogger(ShoppingHistoryController.class);
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
+        try {
+        } catch (Exception e) {
+            LOG.error("Error at ShoppingHistoryController: " + e.getMessage());
+        } finally {
+            request.getRequestDispatcher("portlets/shoppingHistory.jsp").forward(request, response);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -47,22 +45,6 @@ public class LoginGoogleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        String code = request.getParameter("code");
-        if (code == null || code.isEmpty()) {
-            RequestDispatcher dis = request.getRequestDispatcher("login.jsp");
-            dis.forward(request, response);
-        } else {
-            String accessToken = GoogleUtils.getToken(code);
-            GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
-            request.setAttribute("id", googlePojo.getId());
-            request.setAttribute("name", googlePojo.getName());
-            request.setAttribute("email", googlePojo.getEmail());
-            
-            
-            RequestDispatcher dis = request.getRequestDispatcher("member.jsp");
-            dis.forward(request, response);
-        }
-
     }
 
     /**
@@ -77,7 +59,6 @@ public class LoginGoogleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        doGet(request, response);
     }
 
     /**

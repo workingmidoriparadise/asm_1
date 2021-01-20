@@ -13,9 +13,9 @@ import java.sql.Timestamp;
  * @author KHAM
  */
 public class OrderDTO implements Serializable{
-    Timestamp orderDate;
-    float total;
-    String userID;
+    private Timestamp orderDate;
+    private float total;
+    private String userID;
 
     public OrderDTO() {
     }

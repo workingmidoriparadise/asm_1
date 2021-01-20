@@ -11,13 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author KHAM
  */
 public class LogoutController extends HttpServlet {
-
+    private final static Logger LOG = Logger.getLogger(LogoutController.class);
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -27,9 +28,9 @@ public class LogoutController extends HttpServlet {
             session.setAttribute("role", "guest");
             session.setAttribute("fullname", "guest");
         } catch (Exception e) {
-            log("Error at LogoutController: " +e.getMessage());
+            LOG.error("Error at LogoutController: " +e.getMessage());
         } finally {
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("portlets/index.jsp").forward(request, response);
         }
     }
 

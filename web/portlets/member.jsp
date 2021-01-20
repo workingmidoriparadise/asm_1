@@ -52,6 +52,10 @@
                             <a href="MainController?action=ViewCart">View Cart</a>
                         </li>
                         <li>
+                            <a href="MainController?action=ViewOrderHistory">Shopping History</a>
+                        </li>
+                        
+                        <li>
                             <a href="#">Welcome, ${sessionScope.fullname}</a>
                         </li>
                     </ul>
@@ -80,7 +84,7 @@
                             </select>
                             <input type="hidden" name="page" value="1"/>
                             <input type="submit" name="action" value="Search"/>
-                            <c:if test="${sessionScope.errorInput}">
+                            <c:if test="${sessionScope.memberErrorInput}">
                                 <script> alertErrorInput()</script>
                             </c:if>
                         </div>

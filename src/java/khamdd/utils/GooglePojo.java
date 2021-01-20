@@ -3,22 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package khamdd.dtos;
+package khamdd.utils;
 
 /**
  *
  * @author KHAM
  */
 public class GooglePojo {
-
-    private String id;
-    private String email;
-    private boolean verified_email;
-    private String name;
-    private String given_name;
-    private String family_name;
-    private String link;
-    private String picture;
+  private String id;
+  private String email;
+  private boolean verified_email;
+  private String name;
+  private String given_name;
+  private String family_name;
+  private String link;
+  private String picture;
+  // getter-setter
 
     public String getId() {
         return id;
@@ -83,6 +83,5 @@ public class GooglePojo {
     public void setPicture(String picture) {
         this.picture = picture;
     }
-    
-    
+  
 }

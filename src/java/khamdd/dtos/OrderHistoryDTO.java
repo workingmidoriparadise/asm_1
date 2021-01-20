@@ -11,17 +11,13 @@ import java.io.Serializable;
  *
  * @author KHAM
  */
-public class OrderDetailsDTO implements Serializable{
-    private int quantity, orderID;
+public class OrderHistoryDTO implements Serializable{
+    private int quantity;
     private float price;
     private String productID;
 
-    public OrderDetailsDTO() {
-    }
-
-    public OrderDetailsDTO(int quantity, int orderID, float price, String productID) {
+    public OrderHistoryDTO(int quantity, float price, String productID) {
         this.quantity = quantity;
-        this.orderID = orderID;
         this.price = price;
         this.productID = productID;
     }
@@ -32,14 +28,6 @@ public class OrderDetailsDTO implements Serializable{
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public int getOrderID() {
-        return orderID;
-    }
-
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
     }
 
     public float getPrice() {
@@ -57,6 +45,5 @@ public class OrderDetailsDTO implements Serializable{
     public void setProductID(String productID) {
         this.productID = productID;
     }
-    
     
 }
